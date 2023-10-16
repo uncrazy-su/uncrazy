@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:uncrazy/home/homescreen/homescreen.dart';
-import 'package:uncrazy/login/login_screen.dart';
-import 'package:uncrazy/register/register_screen.dart';
-import 'package:uncrazy/welcome/welcome_screen.dart';
+import 'package:uncrazy/screen/home/homescreen.dart';
+import 'package:uncrazy/screen/login/login_screen.dart';
+import 'package:uncrazy/screen/register/register_screen.dart';
+import 'package:uncrazy/screen/welcome/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());

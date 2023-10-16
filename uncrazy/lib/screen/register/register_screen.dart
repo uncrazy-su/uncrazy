@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:uncrazy/home/homescreen/homescreen.dart';
+import 'package:uncrazy/screen/home/homescreen.dart';
+import 'package:uncrazy/screen/register/register_controller.dart';
 
 class RegisterScreen extends StatelessWidget {
   final emailPhoneController = TextEditingController();
   final passController = TextEditingController();
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
+  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,70 +31,26 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(child: Column(
-                    children: [
-                      Text(
-                        'First Name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        controller: firstNameController,
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)))),
-                      ),
-                    ],
-                  )),
-                  SizedBox(width: 10,),
-                  Expanded(child: Column(
-                    children: [
-                      Text(
-                        'Last Name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        controller: lastNameController,
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)))),
-                      ),
-                    ],
-                  ))
-                ],
+              Text(
+                'Name',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                style: TextStyle(color: Colors.white),
+                controller: nameController,
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 3),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 3),
+                        borderRadius: BorderRadius.all(Radius.circular(20)))),
               ),
               SizedBox(
                 height: 20,
@@ -157,9 +113,13 @@ class RegisterScreen extends StatelessWidget {
                         EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
                     side: BorderSide(color: Colors.white, width: 1),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  onPressed: () async {
+                    // if (await register(
+                    //   nameController.text,
+                    //     emailPhoneController.text, passController.text)) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomeScreen()));
+//                    }
                   },
                   child: Text(
                     'Register',

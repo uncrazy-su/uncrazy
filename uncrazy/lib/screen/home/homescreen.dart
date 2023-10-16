@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uncrazy/note/note_screen.dart';
-import 'package:uncrazy/task/task_screen.dart';
+import 'package:uncrazy/screen/note/note_screen.dart';
+import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,20 +9,12 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          leading: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
           backgroundColor: Colors.black,
           actions: [
             Padding(
-                padding: EdgeInsets.only(top: 5, bottom: 5),
-                child: Container(
-                    width: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ))),
-            SizedBox(
-              width: 20,
-            ),
+              padding: EdgeInsets.only(top: 15),
+              child: Text('Greetings, Everiwan', style: TextStyle(fontSize: 20),)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.person)),
           ],
         ),
         body: Padding(
@@ -30,26 +22,19 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Greetings,',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
+                                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [Text('Task')],
+                    ),
+                    Column(
+                      children: [Text('notes')],
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Imam!',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20,),
+
                 Container(
                   padding:
                       EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
@@ -72,20 +57,6 @@ class HomeScreen extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(10))))
                   ]),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [Text('Task completed')],
-                    ),
-                    Column(
-                      children: [Text('notes written')],
-                    ),
-                  ],
-                )
               ],
             )),
         bottomNavigationBar: Padding(

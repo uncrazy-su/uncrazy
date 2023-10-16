@@ -65,14 +65,14 @@ class NoteScreen extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 constraints: BoxConstraints(
                     minWidth: MediaQuery.of(context).size.width,
-                    maxHeight: 200),
+                    maxHeight: 50),
               ),
               SizedBox(
                 height: 20,
               ),
               Container(
                   padding: EdgeInsets.all(5),
-                  child: Center(child: Text('Image')),
+                  child: Center(child: Text('Description')),
                   width: 100,
                   decoration: BoxDecoration(
                       border: Border.all(

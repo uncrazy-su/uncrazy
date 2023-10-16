@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uncrazy/home/homescreen/homescreen.dart';
+import 'package:uncrazy/screen/home/homescreen.dart';
+import 'package:uncrazy/screen/login/login_controller.dart';
 
 class LoginScreen extends StatelessWidget {
   final emailPhoneController = TextEditingController();
@@ -87,9 +88,12 @@ class LoginScreen extends StatelessWidget {
                         EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
                     side: BorderSide(color: Colors.white, width: 1),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  onPressed: () async {
+                    if (await login(
+                        emailPhoneController.text, passController.text)) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomeScreen()));
+                    }
                   },
                   child: Text(
                     'Login',
