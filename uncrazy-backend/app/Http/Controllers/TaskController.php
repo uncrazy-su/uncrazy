@@ -11,8 +11,12 @@ class TaskController extends Controller
         $user_id= auth()->user()->id;
         $task = Task::create([
             'user_id'=>$user_id,
-            'title'=> $request['title'],
+            'name'=> $request['title'],
             'description'=> $request['description'],
+            'date'=> $request['date'],
+            'time'=> $request['time'],
+            'image'=> $request['image'],
+            'tag'=> $request['tag']
         ]);
         return response(
             $task, 200

@@ -11,12 +11,12 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff1e1e1e),
         body: Padding(
           padding: EdgeInsets.only(top: 15, left: 15, right: 15),
           child: SingleChildScrollView(
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: 30,
@@ -32,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
                 height: 50,
               ),
               Text(
-                'Name',
+                'Username',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -44,16 +44,14 @@ class RegisterScreen extends StatelessWidget {
               TextField(
                 style: TextStyle(color: Colors.white),
                 controller: nameController,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20)))),
+                decoration: const InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue))),
               ),
               SizedBox(
-                height: 20,
+                height: 40,
               ),
               Text(
                 'Email/Phone Number',
@@ -66,15 +64,13 @@ class RegisterScreen extends StatelessWidget {
                 height: 10,
               ),
               TextField(
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: emailPhoneController,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20)))),
+                decoration: const InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue))),
               ),
               SizedBox(
                 height: 40,
@@ -93,33 +89,28 @@ class RegisterScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 controller: passController,
                 obscureText: true,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(20)))),
+                decoration: const InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue))),
               ),
               SizedBox(
                 height: 50,
               ),
               TextButton(
                   style: TextButton.styleFrom(
+                    fixedSize: Size(MediaQuery.of(context).size.width, 40),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     backgroundColor: Colors.blue,
-                    padding:
-                        EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
-                    side: BorderSide(color: Colors.white, width: 1),
                   ),
                   onPressed: () async {
-                    // if (await register(
-                    //   nameController.text,
-                    //     emailPhoneController.text, passController.text)) {
+                    if (await register(nameController.text,
+                        emailPhoneController.text, passController.text)) {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => HomeScreen()));
-//                    }
+                    }
                   },
                   child: Text(
                     'Register',

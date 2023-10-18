@@ -11,11 +11,16 @@ class Task extends Model
 
     protected $fillable = [
         'user_id',
-        'title',
-        'description'
+        'name',
+        'date',
+        'time',
+        'description',
+        'image',
+        'tag'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function users(){
+        return $this->belongsToMany(User::class);
     }
+
 }

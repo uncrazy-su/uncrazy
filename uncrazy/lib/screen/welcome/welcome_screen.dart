@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: Text(
-                    'Un-Crazi Your Schedule Now!',
+                    '\"Un-Crazi Your Schedule Now!\"',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,

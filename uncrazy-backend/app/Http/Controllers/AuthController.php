@@ -10,10 +10,12 @@ class AuthController extends Controller
 {
     public function login(Request $request){
         $attrs = $request->validate([
-            'email'=>'required',
+            'phone_no'=>'required_without:email',
+            'email'=>'required_without:phone_no',
             'password'=>'required'
         ]);
-        if(!Auth::attempt()){
+        
+        if(!Auth::attempt($attrs)){
             return response([
                 'message'=>'invalid credentials'
             ]);
@@ -28,15 +30,19 @@ class AuthController extends Controller
 
     public function signup(Request $request){
         $attrs = $request->validate([
-            'email'=>'required',
+            'phone_no'=>'required_without:email|unique:users,phone_no',
+            'email'=>'required_without:phone_no|unique:users,email',
             'password'=>'required'
         ]);
+
         $user = User::create([
             'name'=> $request['name'],
-            'email'=> $attrs['email'],
-            'password'=> bcrypt(($attrs['password']))
+            'email'=> $attrs['email'] ?? null,
+            'phone_no'=>$attrs['phone_no'] ?? null,
+            'password'=> bcrypt(($request['password']))
         ]);
-        $user['token']=auth()->user()->createToken('secret')->plainTextToken;
+        
+        $user['token']=$user->createToken('secret')->plainTextToken;
 
         return response(
             $user, 200
