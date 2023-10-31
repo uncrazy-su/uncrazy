@@ -5,14 +5,50 @@ class NoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
 
-    return SafeArea(
-        child: SingleChildScrollView(
-      child: Container(
-        height: screensize.height,
-        width: screensize.width,
-        color: Colors.black,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              color: Colors.transparent,
+              width: screensize.width,
+              child: GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                mainAxisSpacing: 5.0,
+                crossAxisSpacing: 5.0,
+                children: List.generate(30, (index) {
+                  return Center(
+                    child: Container(
+                      width: screensize.width * 0.5,
+                      height: screensize.height,
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 5, color: Colors.grey),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ),
+        ),
       ),
-    ));
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        hoverColor: Colors.blue,
+        tooltip: 'add Task',
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+          size: 30,
+        ),
+        onPressed: () {},
+      ),
+    );
   }
 }
 

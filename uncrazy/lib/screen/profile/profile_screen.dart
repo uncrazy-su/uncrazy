@@ -3,19 +3,45 @@ import 'package:flutter/material.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size screensize = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF2B2B2B),
       appBar: AppBar(
-        leading: IconButton(
-          icon: (Icon(
-            Icons.arrow_back,
-            size: 30,
-          )),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: const BackButton(
+          color: Colors.white,
         ),
-        backgroundColor: Colors.black,
+      ),
+
+      body: SingleChildScrollView(
+        child: Container(
+          width: screensize.width,
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: screensize.width * 0.1,
+                right: screensize.width * 0.1,
+                top: screensize.height * 0.05),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(250),
+                    border: Border.all(color: Colors.black, width: 5),
+                  ),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage("assets/images/logo.png"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       // body: Padding(
       //   padding: EdgeInsets.all(15),
