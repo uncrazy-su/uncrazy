@@ -3,9 +3,14 @@ import 'package:uncrazy/screen/home/homescreen.dart';
 import 'package:uncrazy/screen/login/login_screen.dart';
 import 'package:uncrazy/screen/register/register_screen.dart';
 import 'package:uncrazy/screen/welcome/welcome_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,10 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(color: Colors.white)
-        )
-      ),
+          textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
       home: WelcomeScreen(),
     );
   }
@@ -33,12 +35,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
     );
   }
 }
