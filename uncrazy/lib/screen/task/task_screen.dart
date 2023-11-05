@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:uncrazy/screen/add_note/add_note_screen.dart';
+import 'package:uncrazy/screen/add_task/add_task_screen.dart';
+import 'package:uncrazy/widget/datePicker_widget.dart';
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
 
+  @override
+  State<TaskScreen> createState() => _TaskScreen();
+}
+
+class _TaskScreen extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
@@ -50,7 +59,52 @@ class TaskScreen extends StatelessWidget {
                             color: Colors.black,
                             size: 20,
                           ),
-                          onPressed: () {})
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: screensize.width,
+                                    child: AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      title: Text("Pick the Date"),
+                                      actions: [
+                                        Container(
+                                          height: 75,
+                                          child: CupertinoDatePicker(
+                                            mode: CupertinoDatePickerMode.date,
+                                            initialDateTime:
+                                                DateTime(2023, 1, 1),
+                                            onDateTimeChanged:
+                                                (DateTime newDateTime) {
+                                              // Do something
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 50,
+                                        ),
+                                        SizedBox(
+                                          height: 75,
+                                          child: CupertinoDatePicker(
+                                            initialDateTime: DateTime(00, 00),
+                                            mode: CupertinoDatePickerMode.time,
+                                            use24hFormat: true,
+                                            // This is called when the user changes the time.
+                                            onDateTimeChanged:
+                                                (DateTime newTime) {
+                                              //do something
+                                            },
+                                          ),
+                                        ),
+                                        TextButton(
+                                            onPressed: () {},
+                                            child: Text("Save"))
+                                      ],
+                                    ),
+                                  );
+                                });
+                          })
                     ],
                   ),
                 ),
@@ -235,7 +289,10 @@ class TaskScreen extends StatelessWidget {
           color: Colors.black,
           size: 30,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: ((context) => AddTaskScreen())));
+        },
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uncrazy/screen/add_note/add_note_screen.dart';
 
 class NoteScreen extends StatelessWidget {
   @override
@@ -21,16 +22,7 @@ class NoteScreen extends StatelessWidget {
                 mainAxisSpacing: 5.0,
                 crossAxisSpacing: 5.0,
                 children: List.generate(30, (index) {
-                  return Center(
-                    child: Container(
-                      width: screensize.width * 0.5,
-                      height: screensize.height,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 5, color: Colors.grey),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                  );
+                  return gridNote(context);
                 }),
               ),
             ),
@@ -46,7 +38,32 @@ class NoteScreen extends StatelessWidget {
           color: Colors.black,
           size: 30,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: ((context) => AddNoteScreen())));
+        },
+      ),
+    );
+  }
+
+  Container gridNote(BuildContext context) {
+    return Container(
+      // width: screensize.width * 0.5,
+      // height: screensize.height,
+      decoration: BoxDecoration(
+        border: Border.all(width: 5, color: Colors.grey),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextButton(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: ((context) => AddNoteScreen())));
+        },
       ),
     );
   }

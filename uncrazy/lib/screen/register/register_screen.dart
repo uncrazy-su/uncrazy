@@ -7,9 +7,18 @@ class RegisterScreen extends StatelessWidget {
   final passController = TextEditingController();
   final nameController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
+
+    RegExp emailPattern = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+    RegExp phonePatttern = RegExp(r'^(\+62|62|0)8[1-9][0-9]{6,9}$');
+
+    RegExp passPattern =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
     return SafeArea(
       child: Scaffold(
@@ -27,126 +36,49 @@ class RegisterScreen extends StatelessWidget {
         ),
 
         //Body
-        body: SingleChildScrollView(
-          child: Container(
-            width: screensize.width,
-            // height: screensize.height,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/Register.png"),
-                fit: BoxFit.cover,
+        body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              width: screensize.width,
+              // height: screensize.height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/Register.png"),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: screensize.width * 0.1,
-                  right: screensize.width * 0.1,
-                  top: screensize.height * 0.05),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Image.asset(
-                        "assets/images/logo.png",
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: screensize.width * 0.1,
+                    right: screensize.width * 0.1,
+                    top: screensize.height * 0.05),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Align(
                         alignment: Alignment.topRight,
-                      ),
-                    ),
-
-                    Text(
-                      "Welcome!",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: Colors.white,
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.normal),
-                    ),
-
-                    Text(
-                      "un-CRAZI your schedule now!",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.normal),
-                    ),
-
-                    SizedBox(height: screensize.height * 0.05),
-
-                    //Username, need validation
-                    TextField(
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        labelText: "Username",
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          alignment: Alignment.topRight,
                         ),
                       ),
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
 
-                    SizedBox(height: screensize.height * 0.05),
-
-                    //Email/Phone Number, need validation
-                    TextField(
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        labelText: "Email/Phone Number",
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-
-                    SizedBox(height: screensize.height * 0.05),
-
-                    //Password, need validation + eye
-                    TextField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-
-                    //button
-                    SizedBox(height: screensize.height * 0.1),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          backgroundColor: Colors.blue,
-                          minimumSize: Size(screensize.width, 30)),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => HomeScreen())));
-                      },
-                      child: Text(
-                        "Register",
+                      Text(
+                        "Welcome!",
                         textAlign: TextAlign.justify,
+                        style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.white,
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.normal),
+                      ),
+
+                      Text(
+                        "un-CRAZI your schedule now!",
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                             decoration: TextDecoration.none,
                             color: Colors.white,
@@ -154,23 +86,130 @@ class RegisterScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.normal),
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        "|| Un-Crazi @ 2023 ||",
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
+
+                      SizedBox(height: screensize.height * 0.05),
+
+                      //Username, need validation
+                      TextField(
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          labelText: "Username",
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+
+                      SizedBox(height: screensize.height * 0.05),
+
+                      //Email/Phone Number, need validation
+                      TextFormField(
+                        controller: emailPhoneController,
+                        validator: (emailPhoneController) {
+                          var nonNullValue = emailPhoneController ?? '';
+                          if (nonNullValue.isEmpty) {
+                            return ("Email/Phone Number is required");
+                          }
+                          if (!emailPattern.hasMatch(nonNullValue) &&
+                              !phonePatttern.hasMatch(nonNullValue)) {
+                            return ("Please enter valid email/phone number");
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          labelText: "Email/Phone Number",
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+
+                      SizedBox(height: screensize.height * 0.05),
+
+                      //Password, need validation + eye
+                      TextFormField(
+                        obscureText: true,
+                        controller: passController,
+                        validator: (PassCurrentValue) {
+                          var passNonNullValue = PassCurrentValue ?? "";
+                          if (passNonNullValue.isEmpty) {
+                            return ("Password is required");
+                          } else if (passNonNullValue.length < 6) {
+                            return ("Password Must be more than 5 characters");
+                          } else if (!passPattern.hasMatch(passNonNullValue)) {
+                            return ("Password should contain upper,lower,digit and Special character ");
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue)),
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+
+                      //button
+                      SizedBox(height: screensize.height * 0.1),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            backgroundColor: Colors.blue,
+                            minimumSize: Size(screensize.width, 30)),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => HomeScreen()));
+                          }
+                        },
+                        child: Text(
+                          "Register",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                              decoration: TextDecoration.none,
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.normal),
                         ),
                       ),
-                    ),
-                  ]),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          "|| Un-Crazi @ 2023 ||",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
+                            fontSize: 10,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ]),
+              ),
             ),
           ),
         ),
