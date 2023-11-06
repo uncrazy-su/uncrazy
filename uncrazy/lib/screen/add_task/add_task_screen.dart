@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/widget/collaboration_widget.dart';
 import 'package:uncrazy/widget/reminder_widget.dart';
 import 'package:uncrazy/widget/repetition_widget.dart';
-import 'package:intl/intl.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -27,6 +26,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   bool isSwitchCollaboration = false;
 
   final dateController = TextEditingController();
+  final descController = TextEditingController();
+  final titleController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   String datePlease = ' ';
@@ -49,7 +50,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
-    String date = "November 12, 2023";
+    //String date = DateFormat('DD-MM-YYYY').format(DateTime.now());
 
     return SafeArea(
       child: Scaffold(
@@ -80,15 +81,15 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Center(
-                    child: Text(
-                      date,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: Text(
+                  //     date,
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontSize: 18,
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: screensize.height * 0.02),
 
                   //Title
@@ -163,73 +164,89 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                     TextField(
                       controller: dateController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                            borderRadius: BorderRadius.circular(10)),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      style: TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-                    Positioned(
-                      top: 5,
-                      left: 0,
-                      child: IconButton(
-                          icon: ImageIcon(
-                            AssetImage("assets/images/icon_calender.png"),
-                            color: Colors.black,
-                            size: 20,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    width: screensize.width,
-                                    child: AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      title: Text("Pick the Date"),
-                                      actions: [
-                                        Container(
-                                          height: 75,
-                                          child: CupertinoDatePicker(
-                                            mode: CupertinoDatePickerMode.date,
-                                            initialDateTime:
-                                                DateTime(2023, 1, 1),
-                                            onDateTimeChanged:
-                                                (DateTime newDateTime) {
-                                              // Do something
-                                            },
-                                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: IconButton(
+                              icon: ImageIcon(
+                                AssetImage("assets/images/icon_calender.png"),
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        width: screensize.width,
+                                        child: AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          title: Text("Pick the Date"),
+                                          actions: [
+                                            Container(
+                                              height: 75,
+                                              child: CupertinoDatePicker(
+                                                mode: CupertinoDatePickerMode
+                                                    .date,
+                                                initialDateTime: selectedDate,
+                                                onDateTimeChanged:
+                                                    (DateTime value) {
+                                                  if (value != null &&
+                                                      value != selectedDate)
+                                                    setState(() {
+                                                      datePlease1 = value;
+                                                    });
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                            ),
+                                            SizedBox(
+                                              height: 75,
+                                              child: CupertinoDatePicker(
+                                                initialDateTime:
+                                                    selectedDate,
+                                                mode: CupertinoDatePickerMode
+                                                    .time,
+                                                use24hFormat: true,
+                                                // This is called when the user changes the time.
+                                                onDateTimeChanged: (value) {
+                                                  if (value != null &&
+                                                      value != selectedDate)
+                                                    setState(() {
+                                                      timePlease1 = value;
+                                                    });
+                                                },
+                                              ),
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    dateController
+                                                        .text = DateFormat
+                                                                ('yyyy-MM-dd')
+                                                            .format(
+                                                                datePlease1) +
+                                                        "   " +
+                                                        DateFormat.Hm().format(
+                                                            timePlease1);
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: const Text("Save"))
+                                          ],
                                         ),
-                                        SizedBox(
-                                          height: 50,
-                                        ),
-                                        SizedBox(
-                                          height: 75,
-                                          child: CupertinoDatePicker(
-                                            initialDateTime: DateTime(00, 00),
-                                            mode: CupertinoDatePickerMode.time,
-                                            use24hFormat: true,
-                                            // This is called when the user changes the time.
-                                            onDateTimeChanged:
-                                                (DateTime newTime) {
-                                              //do something
-                                            },
-                                          ),
-                                        ),
-                                        TextButton(
-                                            onPressed: () {},
-                                            child: Text("Save"))
-                                      ],
-                                    ),
-                                  );
-                                });
-                          }),
+                                      );
+                                    });
+                              })),
+                      style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     // Positioned(
                     //   top: 5,
@@ -481,13 +498,11 @@ class _AddTaskScreen extends State<AddTaskScreen> {
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              print(date.replaceAll('/', '-'));
-              if (await addTask(titleController.text, '2023-11-06',
-                  time, descController.text, 0, 0)) {
-                Navigator.pop(context);
-              }
-            },
-            child: const Text(
+               if(await addTask(titleController.text, dateController.text.split(' ').first, dateController.text.split(' ').last, descController.text, 0, 0)){
+                 Navigator.pop(context);
+               }
+               },
+            child: Text(
               'Save Task',
               style: TextStyle(
                   fontSize: 20,

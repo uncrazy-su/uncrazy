@@ -9,7 +9,7 @@ import 'package:uncrazy/data/user/user.dart';
 Future<bool> logout() async {
   try {
       final response = await client
-          .post(Uri.parse(signupURL),
+          .post(Uri.parse(logoutURL),
               headers: await requestHeaders())
           .whenComplete(() => SmartDialog.dismiss());
       switch (response.statusCode) {

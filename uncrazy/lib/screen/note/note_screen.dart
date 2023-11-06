@@ -56,7 +56,7 @@ class NoteScreen extends ConsumerWidget {
             ),
             onPressed: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: ((context) => AddNoteScreen())));
+                  MaterialPageRoute(builder: ((context) => AddNoteScreen()))).then((value) => noteScreenController.getNotes());
             },
           ),
         ));

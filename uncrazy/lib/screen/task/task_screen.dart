@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/screen/add_note/add_note_screen.dart';
 import 'package:uncrazy/screen/add_task/add_task_screen.dart';
 import 'package:uncrazy/screen/task/task_screen_controller.dart';
@@ -56,7 +58,7 @@ class TaskScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            "  Today  ",
+                            "  Upcoming  ",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -84,8 +86,7 @@ class TaskScreen extends ConsumerWidget {
                                               child: CupertinoDatePicker(
                                                 mode: CupertinoDatePickerMode
                                                     .date,
-                                                initialDateTime:
-                                                    DateTime(2023, 1, 1),
+                                                initialDateTime: DateTime.now(),
                                                 onDateTimeChanged:
                                                     (DateTime newDateTime) {
                                                   // Do something
@@ -98,8 +99,7 @@ class TaskScreen extends ConsumerWidget {
                                             SizedBox(
                                               height: 75,
                                               child: CupertinoDatePicker(
-                                                initialDateTime:
-                                                    DateTime(00, 00),
+                                                initialDateTime: DateTime.now(),
                                                 mode: CupertinoDatePickerMode
                                                     .time,
                                                 use24hFormat: true,
@@ -133,8 +133,15 @@ class TaskScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: ListView.builder(
-                        itemCount: entries.length,
+                        itemCount: model.tasks
+                              .where((element) => DateTime.parse(element.date)
+                                .isAfter(DateTime.now()))
+                              .toList().length,
                         itemBuilder: (BuildContext context, int index) {
+                          List<Task> todayTask = model.tasks
+                              .where((element) => DateTime.parse(element.date)
+                                .isAfter(DateTime.now()))
+                              .toList();
                           return Container(
                             height: 30,
                             child: Row(
@@ -144,7 +151,7 @@ class TaskScreen extends ConsumerWidget {
                                   width: screensize.width * 0.75,
                                   color: Colors.white,
                                   child: Text(
-                                    '${entries[index]}',
+                                    '${todayTask[index].title}',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
@@ -199,8 +206,17 @@ class TaskScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: ListView.builder(
-                        itemCount: model.tasks.length,
+                        itemCount: model.tasks
+                            .where((element) => DateTime.parse(element.date)
+                                .isBefore(DateTime.now()))
+                                // .isBefore(DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()))))
+                            .toList()
+                            .length,
                         itemBuilder: (BuildContext context, int index) {
+                          List<Task> overdueTask = model.tasks
+                              .where((element) => DateTime.parse(element.date)
+                                  .isBefore(DateTime.now()))
+                              .toList();
                           return Container(
                             height: 30,
                             child: Row(
@@ -210,7 +226,7 @@ class TaskScreen extends ConsumerWidget {
                                   width: screensize.width * 0.75,
                                   color: Colors.white,
                                   child: Text(
-                                    '${model.tasks[index].title}',
+                                    '${overdueTask[index].title}',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
@@ -303,8 +319,10 @@ class TaskScreen extends ConsumerWidget {
               size: 30,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: ((context) => AddTaskScreen())));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: ((context) => AddTaskScreen())))
+                  .then((value) => taskScreenController.getTasks());
             },
           ),
         ));
