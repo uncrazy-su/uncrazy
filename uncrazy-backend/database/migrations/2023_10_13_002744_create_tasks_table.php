@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('name');
+            $table->string('title');
             $table->date('date');
             $table->time('time');
             $table->string('description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('tag')->nullable();
+            $table->integer('reminder')->nullable();
+            $table->integer('tag')->nullable();
             $table->integer('status');
             $table->timestamps();
         });

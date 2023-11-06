@@ -17,14 +17,14 @@ class AuthController extends Controller
         
         if(!Auth::attempt($attrs)){
             return response([
-                'message'=>'invalid credentials'
-            ]);
+                'Invalid Credentials'
+            ], 403);
         }
-        $user = auth()->user();
-        $user['token']=auth()->user()->createToken('secret')->plainTextToken;
+        //$user = auth()->user();
+        $token = auth()->user()->createToken('secret')->plainTextToken;
 
         return response(
-            $user, 200
+            $token, 200
         );
     }
 
@@ -42,10 +42,26 @@ class AuthController extends Controller
             'password'=> bcrypt(($request['password']))
         ]);
         
-        $user['token']=$user->createToken('secret')->plainTextToken;
+        $token=$user->createToken('secret')->plainTextToken;
 
         return response(
-            $user, 200
+            $token, 200
         );
+    }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+        return response([
+            'logout'
+        ], 200);
+    }
+
+    // get user detail
+    public function user()
+    {
+        return response(
+            auth()->user()
+        , 200);
     }
 }

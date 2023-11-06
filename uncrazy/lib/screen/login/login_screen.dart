@@ -132,9 +132,10 @@ class _LoginScreen extends State<LoginScreen> {
                             return ("Password is required");
                           } else if (passNonNullValue.length < 6) {
                             return ("Password Must be more than 5 characters");
-                          } else if (!passPattern.hasMatch(passNonNullValue)) {
-                            return ("Password should contain upper,lower,digit and Special character ");
-                          }
+                          } 
+                          // else if (!passPattern.hasMatch(passNonNullValue)) {
+                          //   return ("Password should contain upper,lower,digit and Special character ");
+                          // }
                           return null;
                         },
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -165,11 +166,14 @@ class _LoginScreen extends State<LoginScreen> {
                             backgroundColor: Colors.blue,
                             minimumSize:
                                 Size(MediaQuery.of(context).size.width, 30)),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => HomeScreen()));
-                          }
+                            if (await login(
+                                emailPhoneController.text,
+                                passController.text)) {
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                  builder: (_) => HomeScreen()), (route) => false);
+                            }                          }
 
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: ((context) => HomeScreen())));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uncrazy/screen/add_note/add_note_controller.dart';
 import 'package:uncrazy/screen/home/homescreen.dart';
 import 'package:uncrazy/screen/note/note_screen.dart';
 import 'package:uncrazy/screen/profile/profile_screen.dart';
@@ -14,6 +15,8 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreen extends State<AddNoteScreen> {
+    final titleController = TextEditingController();
+  final descController = TextEditingController();
   String date = "November 12, 2023";
 
   @override
@@ -85,6 +88,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                     ),
                   ),
                   TextFormField(
+                    controller: titleController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -127,6 +131,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                     width: screensize.width,
                     height: screensize.height * 0.5,
                     child: TextFormField(
+                      controller: descController,
                       expands: true,
                       maxLines: null,
                       textAlignVertical: TextAlignVertical.top,
@@ -216,7 +221,11 @@ class _AddNoteScreen extends State<AddNoteScreen> {
               padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
               side: BorderSide(color: Colors.white, width: 1),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async {
+              if (await addNote(titleController.text, descController.text)) {
+                Navigator.pop(context);
+              }
+            },
             child: Text(
               'Save Note',
               style: TextStyle(

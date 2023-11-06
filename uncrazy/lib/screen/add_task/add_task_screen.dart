@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:day_picker/day_picker.dart';
+import 'package:uncrazy/screen/add_task/add_task_controller.dart';
 import 'package:uncrazy/screen/note/note_screen.dart';
 import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/register/register_screen.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/widget/collaboration_widget.dart';
 import 'package:uncrazy/widget/reminder_widget.dart';
 import 'package:uncrazy/widget/repetition_widget.dart';
+import 'package:intl/intl.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -22,6 +24,13 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   bool isSwitchRepetition = false;
   bool isSwitchReminder = false;
   bool isSwitchCollaboration = false;
+
+  final titleController = TextEditingController();
+  final descController = TextEditingController();
+  final dateController = TextEditingController();
+
+  late String date;
+  late String time;
 
   int? _value = 1;
   List<String> tag_List = <String>[
@@ -37,7 +46,9 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
-    String date = "November 12, 2023";
+    date = '06/11/2023';
+    time = '09:00';
+    //DateTime.now().toString();
 
     return SafeArea(
       child: Scaffold(
@@ -106,6 +117,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                     ),
                   ),
                   TextFormField(
+                    controller: titleController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -174,21 +186,33 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
+                                  String pickedDate =
+                                      DateTime.now().toString().split('').first;
+                                  String pickedTime = '00:00';
+
                                   return Container(
                                     width: screensize.width,
                                     child: AlertDialog(
                                       backgroundColor: Colors.white,
-                                      title: Text("Pick the Date"),
+                                      title: const Text("Pick the Date"),
                                       actions: [
                                         Container(
                                           height: 75,
                                           child: CupertinoDatePicker(
                                             mode: CupertinoDatePickerMode.date,
-                                            initialDateTime:
-                                                DateTime(2023, 1, 1),
+                                            initialDateTime: DateTime.now(),
                                             onDateTimeChanged:
                                                 (DateTime newDateTime) {
                                               // Do something
+                                              //dateTime
+                                              setState(() {
+                                                pickedDate = newDateTime
+                                                    .toString()
+                                                    .split(' ')
+                                                    .first
+                                                    .toString();
+                                                //print(pickedDate);
+                                              });
                                             },
                                           ),
                                         ),
@@ -198,19 +222,33 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                         SizedBox(
                                           height: 75,
                                           child: CupertinoDatePicker(
-                                            initialDateTime: DateTime(00, 00),
+                                            initialDateTime: DateTime.now(),
                                             mode: CupertinoDatePickerMode.time,
                                             use24hFormat: true,
                                             // This is called when the user changes the time.
                                             onDateTimeChanged:
                                                 (DateTime newTime) {
                                               //do something
+                                              pickedTime = newTime
+                                                  .toString()
+                                                  .split(' ')
+                                                  .last
+                                                  .split('.')
+                                                  .first
+                                                  .toString();
                                             },
                                           ),
                                         ),
                                         TextButton(
-                                            onPressed: () {},
-                                            child: Text("Save"))
+                                            onPressed: () {
+                                              setState(() {
+                                                date = pickedDate.replaceAll(
+                                                    '/', '-');
+                                                time = pickedTime;
+                                                print(date);
+                                              });
+                                            },
+                                            child: const Text("Save"))
                                       ],
                                     ),
                                   );
@@ -247,6 +285,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                     ),
                   ),
                   TextFormField(
+                    controller: descController,
                     maxLines: 3,
                     textAlignVertical: TextAlignVertical.top,
                     decoration: InputDecoration(
@@ -460,8 +499,14 @@ class _AddTaskScreen extends State<AddTaskScreen> {
               padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
               side: BorderSide(color: Colors.white, width: 1),
             ),
-            onPressed: () => Navigator.pop(context),
-            child: Text(
+            onPressed: () async {
+              print(date.replaceAll('/', '-'));
+              if (await addTask(titleController.text, '2023-11-06',
+                  time, descController.text, 0, 0)) {
+                Navigator.pop(context);
+              }
+            },
+            child: const Text(
               'Save Task',
               style: TextStyle(
                   fontSize: 20,

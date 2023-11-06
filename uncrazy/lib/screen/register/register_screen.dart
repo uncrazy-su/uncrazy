@@ -91,6 +91,7 @@ class RegisterScreen extends StatelessWidget {
 
                       //Username, need validation
                       TextField(
+                        controller: nameController,
                         decoration: const InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue)),
@@ -147,9 +148,10 @@ class RegisterScreen extends StatelessWidget {
                             return ("Password is required");
                           } else if (passNonNullValue.length < 6) {
                             return ("Password Must be more than 5 characters");
-                          } else if (!passPattern.hasMatch(passNonNullValue)) {
-                            return ("Password should contain upper,lower,digit and Special character ");
                           }
+                          //  else if (!passPattern.hasMatch(passNonNullValue)) {
+                          //   return ("Password should contain upper,lower,digit and Special character ");
+                          // }
                           return null;
                         },
                         decoration: const InputDecoration(
@@ -175,10 +177,15 @@ class RegisterScreen extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(30))),
                             backgroundColor: Colors.blue,
                             minimumSize: Size(screensize.width, 30)),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => HomeScreen()));
+                            if (await register(
+                                nameController.text,
+                                emailPhoneController.text,
+                                passController.text)) {
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                  builder: (_) => HomeScreen()), (route) => false);
+                            }
                           }
                         },
                         child: Text(

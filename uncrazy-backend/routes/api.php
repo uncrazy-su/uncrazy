@@ -21,8 +21,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
 
 Route::group(['middleware'=>['auth:sanctum']], function(){
+    Route::get('/user', [AuthController::class, 'user']);
+//    Route::put('/user', [AuthController::class, 'update']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    
+    Route::get('/tasks', [TaskController::class,'index']);
     Route::post('/tasks', [TaskController::class, 'create']);
     
+    Route::get('/notes', [NoteController::class,'index']);
     Route::post('/notes', [NoteController::class, 'create']);
     
 });

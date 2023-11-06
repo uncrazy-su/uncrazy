@@ -1,300 +1,313 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/screen/add_note/add_note_screen.dart';
 import 'package:uncrazy/screen/add_task/add_task_screen.dart';
+import 'package:uncrazy/screen/task/task_screen_controller.dart';
+import 'package:uncrazy/screen/task/task_screen_model.dart';
 import 'package:uncrazy/widget/datePicker_widget.dart';
 
-class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key});
+class TaskScreen extends ConsumerWidget {
+  final refresher = RefreshController(initialRefresh: true);
+  late TaskScreenController taskScreenController;
+  late TaskScreenModel model;
 
   @override
-  State<TaskScreen> createState() => _TaskScreen();
-}
-
-class _TaskScreen extends State<TaskScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     Size screensize = MediaQuery.of(context).size;
 
     List<String> entries = <String>['Task A', 'Task B', 'Task C'];
+    taskScreenController = ref.watch(taskScreenVMProvider.notifier);
+    model = ref.watch(taskScreenVMProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-          child: SafeArea(
-        //The start
-        child: Container(
-          width: screensize.width,
-          color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //Today Task
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "  Today  ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                          icon: ImageIcon(
-                            AssetImage("assets/images/icon_calender.png"),
-                            color: Colors.black,
-                            size: 20,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    width: screensize.width,
-                                    child: AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      title: Text("Pick the Date"),
-                                      actions: [
-                                        Container(
-                                          height: 75,
-                                          child: CupertinoDatePicker(
-                                            mode: CupertinoDatePickerMode.date,
-                                            initialDateTime:
-                                                DateTime(2023, 1, 1),
-                                            onDateTimeChanged:
-                                                (DateTime newDateTime) {
-                                              // Do something
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 50,
-                                        ),
-                                        SizedBox(
-                                          height: 75,
-                                          child: CupertinoDatePicker(
-                                            initialDateTime: DateTime(00, 00),
-                                            mode: CupertinoDatePickerMode.time,
-                                            use24hFormat: true,
-                                            // This is called when the user changes the time.
-                                            onDateTimeChanged:
-                                                (DateTime newTime) {
-                                              //do something
-                                            },
-                                          ),
-                                        ),
-                                        TextButton(
-                                            onPressed: () {},
-                                            child: Text("Save"))
-                                      ],
-                                    ),
-                                  );
-                                });
-                          })
-                    ],
-                  ),
-                ),
-              ),
-              //Container Today's Task
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: ListView.builder(
-                    itemCount: entries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 30,
-                        child: Row(
-                          children: [
-                            CheckboxExample(),
-                            Container(
-                              width: screensize.width * 0.75,
-                              color: Colors.white,
-                              child: Text(
-                                '${entries[index]}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // child: Center(child: Text('Entry ${entries[index]}')),
-                      );
-                    },
-                  ),
-                ),
-              ),
-
-              // Overdue Task
-              SizedBox(height: screensize.height * 0.02),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "  Overdue  ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              //Overdue tasklist
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: ListView.builder(
-                    itemCount: entries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 30,
-                        child: Row(
-                          children: [
-                            CheckboxExample(),
-                            Container(
-                              width: screensize.width * 0.75,
-                              color: Colors.white,
-                              child: Text(
-                                '${entries[index]}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-
-              //collaboration task
-              SizedBox(height: screensize.height * 0.02),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "  Collaboration  ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Collaboration tasklist
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  width: screensize.width,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: ListView.builder(
-                    itemCount: entries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 30,
-                        child: Row(
-                          children: [
-                            CheckboxExample(),
-                            Container(
-                              width: screensize.width * 0.75,
-                              color: Colors.white,
-                              child: Text(
-                                '${entries[index]}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      )),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
-        hoverColor: Colors.blue,
-        tooltip: 'add Task',
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-          size: 30,
-        ),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: ((context) => AddTaskScreen())));
+    return SmartRefresher(
+        controller: refresher,
+        onRefresh: () {
+          refresher.headerMode?.value = RefreshStatus.idle;
+          taskScreenController.getTasks();
+          refresher.loadComplete();
         },
-      ),
-    );
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+              child: SafeArea(
+            //The start
+            child: Container(
+              width: screensize.width,
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //Today Task
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "  Today  ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                              icon: ImageIcon(
+                                AssetImage("assets/images/icon_calender.png"),
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        width: screensize.width,
+                                        child: AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          title: Text("Pick the Date"),
+                                          actions: [
+                                            Container(
+                                              height: 75,
+                                              child: CupertinoDatePicker(
+                                                mode: CupertinoDatePickerMode
+                                                    .date,
+                                                initialDateTime:
+                                                    DateTime(2023, 1, 1),
+                                                onDateTimeChanged:
+                                                    (DateTime newDateTime) {
+                                                  // Do something
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                            ),
+                                            SizedBox(
+                                              height: 75,
+                                              child: CupertinoDatePicker(
+                                                initialDateTime:
+                                                    DateTime(00, 00),
+                                                mode: CupertinoDatePickerMode
+                                                    .time,
+                                                use24hFormat: true,
+                                                // This is called when the user changes the time.
+                                                onDateTimeChanged:
+                                                    (DateTime newTime) {
+                                                  //do something
+                                                },
+                                              ),
+                                            ),
+                                            TextButton(
+                                                onPressed: () {},
+                                                child: const Text("Save"))
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              })
+                        ],
+                      ),
+                    ),
+                  ),
+                  //Container Today's Task
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: ListView.builder(
+                        itemCount: entries.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 30,
+                            child: Row(
+                              children: [
+                                CheckboxExample(),
+                                Container(
+                                  width: screensize.width * 0.75,
+                                  color: Colors.white,
+                                  child: Text(
+                                    '${entries[index]}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // child: Center(child: Text('Entry ${entries[index]}')),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  // Overdue Task
+                  SizedBox(height: screensize.height * 0.02),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "  Overdue  ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  //Overdue tasklist
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: ListView.builder(
+                        itemCount: model.tasks.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 30,
+                            child: Row(
+                              children: [
+                                CheckboxExample(),
+                                Container(
+                                  width: screensize.width * 0.75,
+                                  color: Colors.white,
+                                  child: Text(
+                                    '${model.tasks[index].title}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  //collaboration task
+                  SizedBox(height: screensize.height * 0.02),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "  Collaboration  ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Collaboration tasklist
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: screensize.width,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: ListView.builder(
+                        itemCount: entries.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 30,
+                            child: Row(
+                              children: [
+                                CheckboxExample(),
+                                Container(
+                                  width: screensize.width * 0.75,
+                                  color: Colors.white,
+                                  child: Text(
+                                    '${entries[index]}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.orange,
+            hoverColor: Colors.blue,
+            tooltip: 'add Task',
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: ((context) => AddTaskScreen())));
+            },
+          ),
+        ));
   }
 }
 

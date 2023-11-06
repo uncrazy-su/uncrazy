@@ -18,4 +18,11 @@ class NoteController extends Controller
             $note, 200
         );
     }
+
+    public function index(){
+        $notes = auth()->user()->notes;
+        return response(
+            $notes,200
+        );
+    }
 }

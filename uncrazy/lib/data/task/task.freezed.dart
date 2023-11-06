@@ -24,8 +24,18 @@ mixin _$Task {
   int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'title')
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'date')
+  String get date => throw _privateConstructorUsedError;
+  @JsonKey(name: 'time')
+  String get time => throw _privateConstructorUsedError;
   @JsonKey(name: 'description')
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reminder')
+  int get reminder => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tag')
+  int get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  int get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +50,12 @@ abstract class $TaskCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'title') String title,
-      @JsonKey(name: 'description') String description});
+      @JsonKey(name: 'date') String date,
+      @JsonKey(name: 'time') String time,
+      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'reminder') int reminder,
+      @JsonKey(name: 'tag') int tag,
+      @JsonKey(name: 'status') int status});
 }
 
 /// @nodoc
@@ -58,7 +73,12 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? date = null,
+    Object? time = null,
     Object? description = null,
+    Object? reminder = null,
+    Object? tag = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,10 +89,30 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      reminder: null == reminder
+          ? _value.reminder
+          : reminder // ignore: cast_nullable_to_non_nullable
+              as int,
+      tag: null == tag
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as int,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -87,7 +127,12 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'title') String title,
-      @JsonKey(name: 'description') String description});
+      @JsonKey(name: 'date') String date,
+      @JsonKey(name: 'time') String time,
+      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'reminder') int reminder,
+      @JsonKey(name: 'tag') int tag,
+      @JsonKey(name: 'status') int status});
 }
 
 /// @nodoc
@@ -102,7 +147,12 @@ class __$$TaskImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? date = null,
+    Object? time = null,
     Object? description = null,
+    Object? reminder = null,
+    Object? tag = null,
+    Object? status = null,
   }) {
     return _then(_$TaskImpl(
       null == id
@@ -113,10 +163,30 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      null == reminder
+          ? _value.reminder
+          : reminder // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == tag
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -127,7 +197,12 @@ class _$TaskImpl implements _Task {
   const _$TaskImpl(
       @JsonKey(name: 'id') this.id,
       @JsonKey(name: 'title') this.title,
-      @JsonKey(name: 'description') this.description);
+      @JsonKey(name: 'date') this.date,
+      @JsonKey(name: 'time') this.time,
+      @JsonKey(name: 'description') this.description,
+      @JsonKey(name: 'reminder') this.reminder,
+      @JsonKey(name: 'tag') this.tag,
+      @JsonKey(name: 'status') this.status);
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
@@ -139,12 +214,27 @@ class _$TaskImpl implements _Task {
   @JsonKey(name: 'title')
   final String title;
   @override
+  @JsonKey(name: 'date')
+  final String date;
+  @override
+  @JsonKey(name: 'time')
+  final String time;
+  @override
   @JsonKey(name: 'description')
   final String description;
+  @override
+  @JsonKey(name: 'reminder')
+  final int reminder;
+  @override
+  @JsonKey(name: 'tag')
+  final int tag;
+  @override
+  @JsonKey(name: 'status')
+  final int status;
 
   @override
   String toString() {
-    return 'Task(id: $id, title: $title, description: $description)';
+    return 'Task(id: $id, title: $title, date: $date, time: $time, description: $description, reminder: $reminder, tag: $tag, status: $status)';
   }
 
   @override
@@ -154,13 +244,20 @@ class _$TaskImpl implements _Task {
             other is _$TaskImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.time, time) || other.time == time) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.reminder, reminder) ||
+                other.reminder == reminder) &&
+            (identical(other.tag, tag) || other.tag == tag) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, date, time, description, reminder, tag, status);
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +277,12 @@ abstract class _Task implements Task {
   const factory _Task(
       @JsonKey(name: 'id') final int id,
       @JsonKey(name: 'title') final String title,
-      @JsonKey(name: 'description') final String description) = _$TaskImpl;
+      @JsonKey(name: 'date') final String date,
+      @JsonKey(name: 'time') final String time,
+      @JsonKey(name: 'description') final String description,
+      @JsonKey(name: 'reminder') final int reminder,
+      @JsonKey(name: 'tag') final int tag,
+      @JsonKey(name: 'status') final int status) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -191,8 +293,23 @@ abstract class _Task implements Task {
   @JsonKey(name: 'title')
   String get title;
   @override
+  @JsonKey(name: 'date')
+  String get date;
+  @override
+  @JsonKey(name: 'time')
+  String get time;
+  @override
   @JsonKey(name: 'description')
   String get description;
+  @override
+  @JsonKey(name: 'reminder')
+  int get reminder;
+  @override
+  @JsonKey(name: 'tag')
+  int get tag;
+  @override
+  @JsonKey(name: 'status')
+  int get status;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

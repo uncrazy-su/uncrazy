@@ -24,8 +24,10 @@ mixin _$User {
   int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone_no')
+  String? get phone_no => throw _privateConstructorUsedError;
   @JsonKey(name: 'email')
-  String get email => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   @JsonKey(name: 'token')
   String? get token => throw _privateConstructorUsedError;
 
@@ -42,7 +44,8 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'email') String email,
+      @JsonKey(name: 'phone_no') String? phone_no,
+      @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'token') String? token});
 }
 
@@ -61,7 +64,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? email = null,
+    Object? phone_no = freezed,
+    Object? email = freezed,
     Object? token = freezed,
   }) {
     return _then(_value.copyWith(
@@ -73,10 +77,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      email: null == email
+      phone_no: freezed == phone_no
+          ? _value.phone_no
+          : phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -95,7 +103,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'email') String email,
+      @JsonKey(name: 'phone_no') String? phone_no,
+      @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'token') String? token});
 }
 
@@ -111,7 +120,8 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? email = null,
+    Object? phone_no = freezed,
+    Object? email = freezed,
     Object? token = freezed,
   }) {
     return _then(_$UserImpl(
@@ -123,10 +133,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      null == email
+      freezed == phone_no
+          ? _value.phone_no
+          : phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -141,6 +155,7 @@ class _$UserImpl implements _User {
   const _$UserImpl(
       @JsonKey(name: 'id') this.id,
       @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'phone_no') this.phone_no,
       @JsonKey(name: 'email') this.email,
       @JsonKey(name: 'token') this.token);
 
@@ -154,15 +169,18 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'name')
   final String name;
   @override
+  @JsonKey(name: 'phone_no')
+  final String? phone_no;
+  @override
   @JsonKey(name: 'email')
-  final String email;
+  final String? email;
   @override
   @JsonKey(name: 'token')
   final String? token;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, token: $token)';
+    return 'User(id: $id, name: $name, phone_no: $phone_no, email: $email, token: $token)';
   }
 
   @override
@@ -172,13 +190,16 @@ class _$UserImpl implements _User {
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.phone_no, phone_no) ||
+                other.phone_no == phone_no) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.token, token) || other.token == token));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, token);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, phone_no, email, token);
 
   @JsonKey(ignore: true)
   @override
@@ -198,7 +219,8 @@ abstract class _User implements User {
   const factory _User(
       @JsonKey(name: 'id') final int id,
       @JsonKey(name: 'name') final String name,
-      @JsonKey(name: 'email') final String email,
+      @JsonKey(name: 'phone_no') final String? phone_no,
+      @JsonKey(name: 'email') final String? email,
       @JsonKey(name: 'token') final String? token) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -210,8 +232,11 @@ abstract class _User implements User {
   @JsonKey(name: 'name')
   String get name;
   @override
+  @JsonKey(name: 'phone_no')
+  String? get phone_no;
+  @override
   @JsonKey(name: 'email')
-  String get email;
+  String? get email;
   @override
   @JsonKey(name: 'token')
   String? get token;

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uncrazy/data/user/user.dart';
+import 'package:uncrazy/screen/profile/profile_screen_controller.dart';
+import 'package:uncrazy/screen/welcome/welcome_screen.dart';
 
 /*Problem with profile screen:
   - Change photo profile not yet implemented
   - Cannot change the username by the change button (dont know how to implement this)
 */
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends ConsumerWidget {
+  User user;
+  ProfileScreen(this.user);
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreen();
-}
-
-class _ProfileScreen extends State<ProfileScreen> {
-  final emailPhoneController = TextEditingController()..text = "r@mail.com";
-  final passController = TextEditingController()..text = "TurnUp@123";
-  final nameController = TextEditingController()..text = "Raisa";
+  final emailPhoneController = TextEditingController();
+  final passController = TextEditingController();
+  final nameController = TextEditingController();
 
   String nameString = " ";
   String emailPhoneString = " ";
@@ -24,7 +24,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     Size screensize = MediaQuery.of(context).size;
 
     RegExp emailPattern = RegExp(
@@ -93,7 +93,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            controller: nameController,
+                            controller: nameController..text=user.name,
                             readOnly: true,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -132,7 +132,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: nameController,
+                                      controller: nameController..text=user.name,
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -148,10 +148,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          setState(() {
+                                          //setState(() {
                                             nameString = nameController.text;
                                             Navigator.pop(context);
-                                          });
+                                          //});
                                         },
                                         child: const Text('Cancel'),
                                       ),
@@ -177,7 +177,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           TextFormField(
                             // initialValue: "email@mail.com",
                             readOnly: true,
-                            controller: emailPhoneController,
+                            controller: emailPhoneController..text=user.email??user.phone_no??'',
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -245,11 +245,11 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          setState(() {
+                                          //setState(() {
                                             emailPhoneString =
                                                 emailPhoneController.text;
                                             Navigator.pop(context);
-                                          });
+                                          //});
                                         },
                                         child: const Text('Cancel'),
                                       ),
@@ -344,10 +344,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          setState(() {
+                                          //setState(() {
                                             passString = passController.text;
                                             Navigator.pop(context);
-                                          });
+                                          //});
                                         },
                                         child: const Text('Cancel'),
                                       ),
@@ -378,7 +378,14 @@ class _ProfileScreen extends State<ProfileScreen> {
                             "Logout",
                             style: TextStyle(color: Colors.grey, fontSize: 20),
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (await logout()) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => WelcomeScreen()),
+                                  (route) => false);
+                            }
+                          },
                         ),
                       ),
                     ],
