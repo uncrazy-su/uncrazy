@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:uncrazy/screen/add_task/add_task_controller.dart';
 import 'package:uncrazy/screen/note/note_screen.dart';
@@ -25,12 +26,14 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   bool isSwitchReminder = false;
   bool isSwitchCollaboration = false;
 
-  final titleController = TextEditingController();
-  final descController = TextEditingController();
   final dateController = TextEditingController();
 
-  late String date;
-  late String time;
+  DateTime selectedDate = DateTime.now();
+  String datePlease = ' ';
+  String timePlease = ' ';
+
+  DateTime datePlease1 = DateTime.now();
+  DateTime timePlease1 = DateTime.now();
 
   int? _value = 1;
   List<String> tag_List = <String>[
@@ -46,9 +49,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
-    date = '06/11/2023';
-    time = '09:00';
-    //DateTime.now().toString();
+    String date = "November 12, 2023";
 
     return SafeArea(
       child: Scaffold(
@@ -159,7 +160,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                     ),
                   ),
                   Stack(children: [
-                    TextFormField(
+                    TextField(
+                      controller: dateController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -186,33 +188,21 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  String pickedDate =
-                                      DateTime.now().toString().split('').first;
-                                  String pickedTime = '00:00';
-
                                   return Container(
                                     width: screensize.width,
                                     child: AlertDialog(
                                       backgroundColor: Colors.white,
-                                      title: const Text("Pick the Date"),
+                                      title: Text("Pick the Date"),
                                       actions: [
                                         Container(
                                           height: 75,
                                           child: CupertinoDatePicker(
                                             mode: CupertinoDatePickerMode.date,
-                                            initialDateTime: DateTime.now(),
+                                            initialDateTime:
+                                                DateTime(2023, 1, 1),
                                             onDateTimeChanged:
                                                 (DateTime newDateTime) {
                                               // Do something
-                                              //dateTime
-                                              setState(() {
-                                                pickedDate = newDateTime
-                                                    .toString()
-                                                    .split(' ')
-                                                    .first
-                                                    .toString();
-                                                //print(pickedDate);
-                                              });
                                             },
                                           ),
                                         ),
@@ -222,39 +212,30 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                         SizedBox(
                                           height: 75,
                                           child: CupertinoDatePicker(
-                                            initialDateTime: DateTime.now(),
+                                            initialDateTime: DateTime(00, 00),
                                             mode: CupertinoDatePickerMode.time,
                                             use24hFormat: true,
                                             // This is called when the user changes the time.
                                             onDateTimeChanged:
                                                 (DateTime newTime) {
                                               //do something
-                                              pickedTime = newTime
-                                                  .toString()
-                                                  .split(' ')
-                                                  .last
-                                                  .split('.')
-                                                  .first
-                                                  .toString();
                                             },
                                           ),
                                         ),
                                         TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                date = pickedDate.replaceAll(
-                                                    '/', '-');
-                                                time = pickedTime;
-                                                print(date);
-                                              });
-                                            },
-                                            child: const Text("Save"))
+                                            onPressed: () {},
+                                            child: Text("Save"))
                                       ],
                                     ),
                                   );
                                 });
                           }),
                     ),
+                    // Positioned(
+                    //   top: 5,
+                    //   left: 0,
+                    //   child:,
+                    // ),
                   ]),
                   SizedBox(height: screensize.height * 0.02),
 
