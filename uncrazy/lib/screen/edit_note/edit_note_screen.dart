@@ -7,14 +7,14 @@ import 'package:uncrazy/screen/register/register_screen.dart';
 import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddNoteScreen extends StatefulWidget {
-  const AddNoteScreen({super.key});
+class EditNoteScreen extends StatefulWidget {
+  const EditNoteScreen({super.key});
 
   @override
-  State<AddNoteScreen> createState() => _AddNoteScreen();
+  State<EditNoteScreen> createState() => _EditNoteScreen();
 }
 
-class _AddNoteScreen extends State<AddNoteScreen> {
+class _EditNoteScreen extends State<EditNoteScreen> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
   String date = "November 12, 2023";
@@ -162,6 +162,57 @@ class _AddNoteScreen extends State<AddNoteScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              backgroundColor: Colors.orange,
+              padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+              side: BorderSide(color: Colors.white, width: 1),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: Colors.black,
+                  //title
+                  title: Text(
+                    "Are you sure to delete?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                  //no description
+
+                  //action = button change or cancel
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
+                      },
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Text(
+              'Delete Note',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(

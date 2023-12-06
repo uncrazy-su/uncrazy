@@ -1,18 +1,25 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/data/user/user.dart';
 import 'package:uncrazy/screen/profile/profile_screen_controller.dart';
 import 'package:uncrazy/screen/welcome/welcome_screen.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 /*Problem with profile screen:
   - Change photo profile not yet implemented
   - Cannot change the username by the change button (dont know how to implement this)
 */
-
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends StatefulWidget {
   User user;
   ProfileScreen(this.user);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreen();
+}
+
+class _ProfileScreen extends State<ProfileScreen> {
   final emailPhoneController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
@@ -23,8 +30,23 @@ class ProfileScreen extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
+  PickedFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  void _pickImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = pickedFile;
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
 
     RegExp emailPattern = RegExp(
@@ -43,7 +65,6 @@ class ProfileScreen extends ConsumerWidget {
           color: Colors.white,
         ),
       ),
-
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -68,9 +89,19 @@ class ProfileScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(250),
                           border: Border.all(color: Colors.black, width: 5),
                         ),
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/logo.png"),
-                        ),
+                        child: _imageFile == null
+                            ? CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/images/logo.png"),
+                              )
+                            : ClipOval(
+                                child: Image.file(
+                                  File(_imageFile!.path),
+                                  width: 250,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                       ),
                       Positioned(
                         bottom: 25,
@@ -81,7 +112,9 @@ class ProfileScreen extends ConsumerWidget {
                             color: Colors.white,
                             size: 50,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            _pickImage();
+                          },
                         ),
                       ),
                     ],
@@ -93,7 +126,7 @@ class ProfileScreen extends ConsumerWidget {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            controller: nameController..text=user.name,
+                            controller: nameController..text = widget.user.name,
                             readOnly: true,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -132,7 +165,8 @@ class ProfileScreen extends ConsumerWidget {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: nameController..text=user.name,
+                                      controller: nameController
+                                        ..text = widget.user.name,
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -149,8 +183,8 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            nameString = nameController.text;
-                                            Navigator.pop(context);
+                                          nameString = nameController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),
@@ -177,7 +211,10 @@ class ProfileScreen extends ConsumerWidget {
                           TextFormField(
                             // initialValue: "email@mail.com",
                             readOnly: true,
-                            controller: emailPhoneController..text=user.email??user.phone_no??'',
+                            controller: emailPhoneController
+                              ..text = widget.user.email ??
+                                  widget.user.phone_no ??
+                                  '',
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -246,9 +283,9 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            emailPhoneString =
-                                                emailPhoneController.text;
-                                            Navigator.pop(context);
+                                          emailPhoneString =
+                                              emailPhoneController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),
@@ -322,7 +359,7 @@ class ProfileScreen extends ConsumerWidget {
                                           return ("Password is required");
                                         } else if (passNonNullValue.length <
                                             6) {
-                                          return ("Password Must be more than 5 characters");
+                                          return ("Password Must be more than 8 characters");
                                         } else if (!passPattern
                                             .hasMatch(passNonNullValue)) {
                                           return ("Password should contain upper,lower,digit and Special character ");
@@ -345,8 +382,8 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            passString = passController.text;
-                                            Navigator.pop(context);
+                                          passString = passController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),
@@ -396,106 +433,6 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ),
-      // body: Padding(
-      //   padding: EdgeInsets.all(15),
-      //   child: SingleChildScrollView(
-      //       child: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       Text(
-      //         'Task',
-      //         style: TextStyle(
-      //             color: Colors.white,
-      //             fontSize: 35,
-      //             fontWeight: FontWeight.bold),
-      //       ),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       Text(
-      //         'October, 11th 2023',
-      //         style: TextStyle(
-      //           color: Colors.white,
-      //           fontSize: 15,
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       Container(
-      //           padding: EdgeInsets.all(5),
-      //           child: Center(child: Text('Title')),
-      //           width: 100,
-      //           decoration: BoxDecoration(
-      //               border: Border.all(
-      //                 color: Colors.white,
-      //                 width: 1,
-      //               ),
-      //               borderRadius: BorderRadius.all(Radius.circular(20)))),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       Container(
-      //         padding:
-      //             EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
-      //         decoration: BoxDecoration(
-      //             color: Colors.white,
-      //             border: Border.all(color: Colors.blue, width: 5),
-      //             borderRadius: BorderRadius.all(Radius.circular(10))),
-      //         constraints: BoxConstraints(
-      //             minWidth: MediaQuery.of(context).size.width, maxHeight: 100),
-      //       ),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       Container(
-      //           padding: EdgeInsets.all(5),
-      //           child: Center(child: Text('Description')),
-      //           width: 100,
-      //           decoration: BoxDecoration(
-      //               border: Border.all(
-      //                 color: Colors.white,
-      //                 width: 1,
-      //               ),
-      //               borderRadius: BorderRadius.all(Radius.circular(20)))),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       Container(
-      //         padding:
-      //             EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
-      //         decoration: BoxDecoration(
-      //             color: Colors.white,
-      //             border: Border.all(color: Colors.blue, width: 5),
-      //             borderRadius: BorderRadius.all(Radius.circular(10))),
-      //         constraints: BoxConstraints(
-      //             minWidth: MediaQuery.of(context).size.width, maxHeight: 150),
-      //       ),
-      //       SizedBox(
-      //         height: 20,
-      //       ),
-      //       TextButton(
-      //           style: TextButton.styleFrom(
-      //             shape: RoundedRectangleBorder(
-      //                 borderRadius: BorderRadius.all(Radius.circular(30))),
-      //             backgroundColor: Colors.blue,
-      //             padding:
-      //                 EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
-      //             side: BorderSide(color: Colors.white, width: 1),
-      //           ),
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //           child: Text(
-      //             'Done',
-      //             style: TextStyle(
-      //                 fontSize: 20,
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.bold),
-      //           ))
-      //     ],
-      //   )),
-      // ),
     );
   }
 }
