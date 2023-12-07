@@ -46,9 +46,7 @@ class _SearchWidget extends State<SearchWidget> {
                   color: Colors.black,
                   size: 20,
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
+                onPressed: () {}),
           ),
         ]),
       ),

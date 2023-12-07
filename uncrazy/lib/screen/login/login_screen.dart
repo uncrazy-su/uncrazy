@@ -16,6 +16,21 @@ class _LoginScreen extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool isObscureText = true;
+
+  //For obscuretext visibility
+  void _togglePasswordVisibility() {
+    if (isObscureText == false) {
+      setState(() {
+        isObscureText = true;
+      });
+    } else {
+      setState(() {
+        isObscureText = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
@@ -97,9 +112,6 @@ class _LoginScreen extends State<LoginScreen> {
                               !phonePatttern.hasMatch(nonNullValue)) {
                             return ("Please enter valid email/phone number");
                           }
-                          // if (!phonePatttern.hasMatch(nonNullValue)) {
-                          //   return ("Please enter valid email/phone number");
-                          // }
                           return null;
                         },
                         decoration: const InputDecoration(
@@ -119,27 +131,24 @@ class _LoginScreen extends State<LoginScreen> {
 
                     SizedBox(height: screensize.height * 0.05),
 
-                    //TextField Password, butuh validasi + eye
+                    //TextField Password
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screensize.width * 0.1),
                       child: TextFormField(
-                        obscureText: true,
+                        obscureText: isObscureText,
                         controller: passController,
                         validator: (PassCurrentValue) {
                           var passNonNullValue = PassCurrentValue ?? "";
                           if (passNonNullValue.isEmpty) {
                             return ("Password is required");
-                          } else if (passNonNullValue.length < 6) {
-                            return ("Password Must be more than 5 characters");
-                          } 
-                          // else if (!passPattern.hasMatch(passNonNullValue)) {
-                          //   return ("Password should contain upper,lower,digit and Special character ");
-                          // }
+                          } else if (passNonNullValue.length < 8) {
+                            return ("Password must be at least 8 characters");
+                          }
                           return null;
                         },
                         style: TextStyle(color: Colors.white, fontSize: 18),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue)),
                           enabledBorder: UnderlineInputBorder(
@@ -148,6 +157,15 @@ class _LoginScreen extends State<LoginScreen> {
                           labelStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isObscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.white,
+                            ),
+                            onPressed: _togglePasswordVisibility,
                           ),
                         ),
                       ),
@@ -168,12 +186,14 @@ class _LoginScreen extends State<LoginScreen> {
                                 Size(MediaQuery.of(context).size.width, 30)),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            if (await login(
-                                emailPhoneController.text,
+                            if (await login(emailPhoneController.text,
                                 passController.text)) {
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                                  builder: (_) => HomeScreen()), (route) => false);
-                            }                          }
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (_) => HomeScreen()),
+                                  (route) => false);
+                            }
+                          }
 
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: ((context) => HomeScreen())));

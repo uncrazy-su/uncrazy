@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       builder: FlutterSmartDialog.init(),
       theme: ThemeData(
           textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
-      home: HomeScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

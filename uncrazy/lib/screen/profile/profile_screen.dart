@@ -33,6 +33,21 @@ class _ProfileScreen extends State<ProfileScreen> {
   PickedFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
+  bool isObscureText = true;
+
+  //For obscuretext visibility
+  void _togglePasswordVisibility() {
+    if (isObscureText == false) {
+      setState(() {
+        isObscureText = true;
+      });
+    } else {
+      setState(() {
+        isObscureText = false;
+      });
+    }
+  }
+
   void _pickImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
 
@@ -343,7 +358,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     backgroundColor: Colors.black,
                                     //title = what do you change
                                     title: Text(
-                                      "Change Email/Phone Number: ",
+                                      "Change Password: ",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -366,13 +381,22 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         }
                                         return null;
                                       },
-                                      decoration: const InputDecoration(
+                                      decoration: InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.blue)),
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.blue)),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            isObscureText
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: _togglePasswordVisibility,
+                                        ),
                                       ),
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 18),

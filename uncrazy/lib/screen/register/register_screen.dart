@@ -2,12 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:uncrazy/screen/home/homescreen.dart';
 import 'package:uncrazy/screen/register/register_controller.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreen();
+}
+
+class _RegisterScreen extends State<RegisterScreen> {
   final emailPhoneController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool isObscureText = true;
+
+  //For obscuretext visibility
+  void _togglePasswordVisibility() {
+    if (isObscureText == false) {
+      setState(() {
+        isObscureText = true;
+      });
+    } else {
+      setState(() {
+        isObscureText = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,15 +168,12 @@ class RegisterScreen extends StatelessWidget {
                           var passNonNullValue = PassCurrentValue ?? "";
                           if (passNonNullValue.isEmpty) {
                             return ("Password is required");
-                          } else if (passNonNullValue.length < 6) {
-                            return ("Password Must be more than 5 characters");
+                          } else if (passNonNullValue.length < 8) {
+                            return ("Password must be at least 8 characters");
                           }
-                          //  else if (!passPattern.hasMatch(passNonNullValue)) {
-                          //   return ("Password should contain upper,lower,digit and Special character ");
-                          // }
                           return null;
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue)),
                           enabledBorder: UnderlineInputBorder(
@@ -163,6 +182,15 @@ class RegisterScreen extends StatelessWidget {
                           labelStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isObscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.white,
+                            ),
+                            onPressed: _togglePasswordVisibility,
                           ),
                         ),
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -183,8 +211,10 @@ class RegisterScreen extends StatelessWidget {
                                 nameController.text,
                                 emailPhoneController.text,
                                 passController.text)) {
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                                  builder: (_) => HomeScreen()), (route) => false);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (_) => HomeScreen()),
+                                  (route) => false);
                             }
                           }
                         },
