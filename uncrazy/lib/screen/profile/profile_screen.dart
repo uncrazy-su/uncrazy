@@ -381,90 +381,100 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       ),
                                     ),
                                     //content = TextFormField to change the username
-                                    content: Column(children: <Widget>[
-                                      TextFormField(
-                                        obscureText: isObscureText,
-                                        controller: passCurrController,
-                                        validator: (PassCurrentValue) {
-                                          var passNonNullValue =
-                                              PassCurrentValue ?? "";
-                                          if (passNonNullValue.isEmpty) {
-                                            return ("Password is required");
-                                          } else if (passNonNullValue.length <
-                                              8) {
-                                            return ("Password must be at least 8 characters");
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.blue)),
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.blue)),
-                                          labelText: "Old Password",
-                                          labelStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                          suffixIcon: IconButton(
-                                            icon: Icon(
-                                              isObscureText
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              _togglePasswordVisibility();
+                                    content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          TextFormField(
+                                            obscureText: isObscureText,
+                                            controller: passCurrController,
+                                            validator: (PassCurrentValue) {
+                                              var passNonNullValue =
+                                                  PassCurrentValue ?? "";
+                                              if (passNonNullValue.isEmpty) {
+                                                return ("Password is required");
+                                              } else if (passNonNullValue
+                                                      .length <
+                                                  8) {
+                                                return ("Password must be at least 8 characters");
+                                              }
+                                              return null;
                                             },
-                                          ),
-                                        ),
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                      TextFormField(
-                                        obscureText: isObscureText,
-                                        controller: passNewController,
-                                        validator: (PassCurrentValue) {
-                                          var passNonNullValue =
-                                              PassCurrentValue ?? "";
-                                          if (passNonNullValue.isEmpty) {
-                                            return ("Password is required");
-                                          } else if (passNonNullValue.length <
-                                              8) {
-                                            return ("Password must be at least 8 characters");
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.blue)),
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.blue)),
-                                          labelText: "New Password",
-                                          labelStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                          suffixIcon: IconButton(
-                                            icon: Icon(
-                                              isObscureText
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility,
-                                              color: Colors.white,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.blue)),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.blue)),
+                                              labelText: "Old Password",
+                                              labelStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                  isObscureText
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  _togglePasswordVisibility();
+                                                },
+                                              ),
                                             ),
-                                            onPressed: () {
-                                              _togglePasswordVisibility();
-                                            },
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18),
                                           ),
-                                        ),
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                    ]),
+                                          TextFormField(
+                                            obscureText: isObscureText,
+                                            controller: passNewController,
+                                            validator: (PassCurrentValue) {
+                                              var passNonNullValue =
+                                                  PassCurrentValue ?? "";
+                                              if (passNonNullValue.isEmpty) {
+                                                return ("Password is required");
+                                              } else if (passNonNullValue
+                                                      .length <
+                                                  8) {
+                                                return ("Password must be at least 8 characters");
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.blue)),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.blue)),
+                                              labelText: "New Password",
+                                              labelStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                  isObscureText
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  _togglePasswordVisibility();
+                                                },
+                                              ),
+                                            ),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
+                                        ]),
                                     //action = button change or cancel
                                     actions: <Widget>[
                                       TextButton(
