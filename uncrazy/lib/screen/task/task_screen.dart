@@ -65,7 +65,7 @@ class TaskScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            "  Upcoming  ",
+                            "  Today  ",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -253,13 +253,23 @@ class TaskScreen extends ConsumerWidget {
                                   Container(
                                     width: screensize.width * 0.75,
                                     color: Colors.white,
-                                    child: Text(
-                                      "  " + '${overdueTask[index].title}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
+                                    child: Row(children: <Widget>[
+                                      Text(
+                                        "  " + '${overdueTask[index].title}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                    ),
+                                      Spacer(),
+                                      Text(
+                                        '${overdueTask[index].date}',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ]),
                                   ),
                                 ],
                               ),

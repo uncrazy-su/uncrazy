@@ -6,17 +6,42 @@ import 'package:uncrazy/screen/note/note_screen.dart';
 import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uncrazy/widget/search_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
+  final StateProvider<bool> isSearchProvider = StateProvider((ref) => false);
+  final StateProvider<Color> searchIndicatorProvider =
+      StateProvider((ref) => Colors.white);
+  final StateProvider<int> indexProvider = StateProvider((ref) => 0);
   late HomeScreenController homeScreenController;
   late HomeScreenModel model;
+
+//  bool isSearch = false;
 
   @override
   Widget build(BuildContext context, ref) {
     homeScreenController = ref.watch(homeScreenVMProvider.notifier);
     model = ref.watch(homeScreenVMProvider);
     Size screensize = MediaQuery.of(context).size;
+    final isSearch = ref.watch(isSearchProvider);
+    final searchIndicator = ref.watch(searchIndicatorProvider);
+    // final indexIndicator = ref.watch(indexProvider);
+
+    // final tabController = TabController(length: 2, vsync: this);
+
+    void resetIcon() {
+      ref.read(isSearchProvider.notifier).state = false;
+      ref.read(searchIndicatorProvider.notifier).state = Colors.white;
+    }
+
+    // Add a listener to the TabController
+    // tabController.addListener(() {
+    //   if (!tabController.indexIsChanging) {
+    //     // This is triggered when the TabBarView is swiped
+    //     resetIcon();
+    //   }
+    // });
 
     return SafeArea(
       child: DefaultTabController(
@@ -109,6 +134,9 @@ class HomeScreen extends ConsumerWidget {
                                   color: Colors.blue),
                               labelColor: Colors.white,
                               unselectedLabelColor: Colors.black,
+                              onTap: (index) {
+                                resetIcon();
+                              },
                               tabs: [
                                 Container(
                                   child: Text(
@@ -141,12 +169,23 @@ class HomeScreen extends ConsumerWidget {
                             child: TextButton(
                               child: Icon(
                                 Icons.search,
-                                color: Colors.white,
+                                color: searchIndicator,
                                 size: 20,
                               ),
                               onPressed: () {
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: ((context) => ProfileScreen())));
+                                if (isSearch == false) {
+                                  ref.read(isSearchProvider.notifier).state =
+                                      true;
+                                  ref
+                                      .read(searchIndicatorProvider.notifier)
+                                      .state = Colors.orange;
+                                } else {
+                                  ref.read(isSearchProvider.notifier).state =
+                                      false;
+                                  ref
+                                      .read(searchIndicatorProvider.notifier)
+                                      .state = Colors.white;
+                                }
                               },
                             ),
                           ),
@@ -155,9 +194,15 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
 
+                  // Search box
+                  SizedBox(height: screensize.height * 0.01),
+
+                  Visibility(visible: isSearch, child: SearchWidget()),
+
                   //Tabbar view, view from another screen
                   SizedBox(height: screensize.height * 0.01),
                   Expanded(
+                    flex: 9,
                     child: TabBarView(
                       children: [
                         TaskScreen(),
