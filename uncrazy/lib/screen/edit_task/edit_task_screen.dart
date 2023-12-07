@@ -162,6 +162,7 @@ class _EditTaskScreen extends State<EditTaskScreen> {
                   ),
                   Stack(children: [
                     TextField(
+                      readOnly: true,
                       controller: dateController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(

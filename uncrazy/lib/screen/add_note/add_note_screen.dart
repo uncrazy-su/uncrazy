@@ -83,6 +83,13 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                   ),
                   TextFormField(
                     controller: titleController,
+                    validator: (titleValue) {
+                      var passNonNullValue = titleValue ?? "";
+                      if (passNonNullValue.isEmpty) {
+                        return ("Title cannot be empty");
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),

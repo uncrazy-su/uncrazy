@@ -17,10 +17,20 @@ class TaskScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
   late TaskScreenController taskScreenController;
   late TaskScreenModel model;
-  // List<Task> model = const [
-  //   Task(1, "title", "2023-05-12", "17:30", "description", 1, 1, 0),
-  //   Task(2, "title2", "2023-11-03", "17:40", "description", 1, 1, 0),
-  // ];
+
+  final selectedIndexProvider = StateProvider<int>((ref) => 0);
+
+  int _value = 0;
+  List<String> tag_List = <String>[
+    "all",
+    "assignment",
+    "event",
+    "social",
+    "health",
+    "class",
+    "work",
+    "fun"
+   ];
 
   @override
   Widget build(BuildContext context, ref) {
@@ -28,6 +38,8 @@ class TaskScreen extends ConsumerWidget {
 
     taskScreenController = ref.watch(taskScreenVMProvider.notifier);
     model = ref.watch(taskScreenVMProvider);
+
+    final selectedIndex = ref.watch(selectedIndexProvider);
 
     return SmartRefresher(
         controller: refresher,
@@ -48,6 +60,25 @@ class TaskScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        tag_List.length,
+                        (int index) {
+                          return ChoiceChip(
+                            label: Text("${tag_List[index]}"),
+                            selectedColor: Colors.orange,
+                            selected: selectedIndex == index,
+                            onSelected: (bool selected) {
+                              ref.read(selectedIndexProvider.notifier).state =
+                                  (selected ? index : null)!;
+                            },
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
                   //Today Task
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -101,20 +132,6 @@ class TaskScreen extends ConsumerWidget {
                                             ),
                                             SizedBox(
                                               height: 50,
-                                            ),
-                                            SizedBox(
-                                              height: 75,
-                                              child: CupertinoDatePicker(
-                                                initialDateTime: DateTime.now(),
-                                                mode: CupertinoDatePickerMode
-                                                    .time,
-                                                use24hFormat: true,
-                                                // This is called when the user changes the time.
-                                                onDateTimeChanged:
-                                                    (DateTime newTime) {
-                                                  //do something
-                                                },
-                                              ),
                                             ),
                                             TextButton(
                                                 onPressed: () {},
@@ -172,6 +189,7 @@ class TaskScreen extends ConsumerWidget {
                                         color: Colors.black,
                                         fontSize: 20,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
@@ -254,11 +272,15 @@ class TaskScreen extends ConsumerWidget {
                                     width: screensize.width * 0.75,
                                     color: Colors.white,
                                     child: Row(children: <Widget>[
-                                      Text(
-                                        "  " + '${overdueTask[index].title}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
+                                      Expanded(
+                                        flex: 8,
+                                        child: Text(
+                                          "  " + '${overdueTask[index].title}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Spacer(),
@@ -343,125 +365,3 @@ class _CheckboxStateExample extends State<CheckboxExample> {
     );
   }
 }
-
-
-
-
-                
-
-// return Scaffold(
-//         backgroundColor: Colors.black,
-//         appBar: AppBar(
-//           leading: IconButton(
-//             icon: (Icon(
-//               Icons.arrow_back,
-//               size: 30,
-//             )),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//           ),
-//           backgroundColor: Colors.black,
-//         ),
-//         body: Padding(
-//           padding: EdgeInsets.all(15),
-//           child: SingleChildScrollView(
-//               child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               Text(
-//                 'Task',
-//                 style: TextStyle(
-//                     color: Colors.white,
-//                     fontSize: 35,
-//                     fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Text(
-//                 'October, 11th 2023',
-//                 style: TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 15,
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Container(
-//                   padding: EdgeInsets.all(5),
-//                   child: Center(child: Text('Title')),
-//                   width: 100,
-//                   decoration: BoxDecoration(
-//                       border: Border.all(
-//                         color: Colors.white,
-//                         width: 1,
-//                       ),
-//                       borderRadius: BorderRadius.all(Radius.circular(20)))),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Container(
-//                 padding:
-//                     EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
-//                 decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     border: Border.all(color: Colors.blue, width: 5),
-//                     borderRadius: BorderRadius.all(Radius.circular(10))),
-//                 constraints: BoxConstraints(
-//                     minWidth: MediaQuery.of(context).size.width,
-//                     maxHeight: 100),
-//               ),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Container(
-//                   padding: EdgeInsets.all(5),
-//                   child: Center(child: Text('Description')),
-//                   width: 100,
-//                   decoration: BoxDecoration(
-//                       border: Border.all(
-//                         color: Colors.white,
-//                         width: 1,
-//                       ),
-//                       borderRadius: BorderRadius.all(Radius.circular(20)))),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Container(
-//                 padding:
-//                     EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
-//                 decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     border: Border.all(color: Colors.blue, width: 5),
-//                     borderRadius: BorderRadius.all(Radius.circular(10))),
-//                 constraints: BoxConstraints(
-//                     minWidth: MediaQuery.of(context).size.width,
-//                     maxHeight: 150),
-//               ),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               TextButton(
-//                   style: TextButton.styleFrom(
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(30))),
-//                     backgroundColor: Colors.blue,
-//                     padding:
-//                         EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
-//                     side: BorderSide(color: Colors.white, width: 1),
-//                   ),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: Text(
-//                     'Done',
-//                     style: TextStyle(
-//                         fontSize: 20,
-//                         color: Colors.white,
-//                         fontWeight: FontWeight.bold),
-//                   ))
-//             ],
-//           )),
-//         ));
