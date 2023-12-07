@@ -14,7 +14,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const ProviderScope(child:MyApp())));
+      .then((value) => runApp(const ProviderScope(child: MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       builder: FlutterSmartDialog.init(),
       theme: ThemeData(
           textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
-      home: Loading(),
+      home: HomeScreen(),
     );
   }
 }
@@ -40,25 +40,25 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmartRefresher(
         controller: refresher,
-                child: Container(
+        child: Container(
           color: Color(0xFF2B2B2B),
-          child: const Center(child: CircularProgressIndicator(color: Colors.white,)),
+          child: const Center(
+              child: CircularProgressIndicator(
+            color: Colors.white,
+          )),
         ),
         onRefresh: () async {
           refresher.headerMode?.value = RefreshStatus.idle;
           SharedPreferences pref = await SharedPreferences.getInstance();
           if (pref.getString('token') != null) {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: ((context) => HomeScreen())),
-                    (route) => false);
-              } 
-          else {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: ((context) => WelcomeScreen())),
-                    (route) => false);
-              }
-            });
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: ((context) => HomeScreen())),
+                (route) => false);
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: ((context) => WelcomeScreen())),
+                (route) => false);
           }
-        }  
-
+        });
+  }
+}

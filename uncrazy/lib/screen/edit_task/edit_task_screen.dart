@@ -12,14 +12,14 @@ import 'package:uncrazy/widget/collaboration_widget.dart';
 import 'package:uncrazy/widget/reminder_widget.dart';
 import 'package:uncrazy/widget/repetition_widget.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+class EditTaskScreen extends StatefulWidget {
+  const EditTaskScreen({super.key});
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreen();
+  State<EditTaskScreen> createState() => _EditTaskScreen();
 }
 
-class _AddTaskScreen extends State<AddTaskScreen> {
+class _EditTaskScreen extends State<EditTaskScreen> {
   //Value for switch
   bool isSwitchRepetition = false;
   bool isSwitchReminder = false;
@@ -435,6 +435,57 @@ class _AddTaskScreen extends State<AddTaskScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              backgroundColor: Colors.orange,
+              padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+              side: BorderSide(color: Colors.white, width: 1),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: Colors.black,
+                  //title
+                  title: Text(
+                    "Are you sure to delete?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                  //no description
+
+                  //action = button change or cancel
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
+                      },
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Text(
+              'Delete Task',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(

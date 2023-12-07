@@ -6,26 +6,18 @@ import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/register/register_screen.dart';
 import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uncrazy/data/note/note.dart';
 
-class AddNoteScreen extends StatefulWidget {
-  Note? note;
-  AddNoteScreen({this.note});
+class EditNoteScreen extends StatefulWidget {
+  const EditNoteScreen({super.key});
 
   @override
-  State<AddNoteScreen> createState() => _AddNoteScreen();
+  State<EditNoteScreen> createState() => _EditNoteScreen();
 }
 
-class _AddNoteScreen extends State<AddNoteScreen> {
+class _EditNoteScreen extends State<EditNoteScreen> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
-
-  @override
-  void initState() {
-    titleController.text = widget.note?.title ?? '';
-    descController.text = widget.note?.description ?? '';
-    super.initState();
-  }
+  String date = "November 12, 2023";
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +27,14 @@ class _AddNoteScreen extends State<AddNoteScreen> {
       child: Scaffold(
           extendBodyBehindAppBar: false,
           resizeToAvoidBottomInset: true,
-          backgroundColor: const Color(0xFF2B2B2B),
+          backgroundColor: Color(0xFF2B2B2B),
+          // appBar: AppBar(
+          //   backgroundColor: Colors.transparent,
+          //   elevation: 0,
+          //   leading: const BackButton(
+          //     color: Colors.white,
+          //   ),
+          // ),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -51,6 +50,15 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                           color: Colors.white,
                           fontSize: 35,
                           fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      date,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                   SizedBox(height: screensize.height * 0.02),
@@ -158,19 +166,64 @@ class _AddNoteScreen extends State<AddNoteScreen> {
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30))),
+              backgroundColor: Colors.orange,
+              padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+              side: BorderSide(color: Colors.white, width: 1),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: Colors.black,
+                  //title
+                  title: Text(
+                    "Are you sure to delete?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                  //no description
+
+                  //action = button change or cancel
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
+                      },
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Text(
+              'Delete Note',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
               backgroundColor: Colors.blue,
               padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              if (widget.note == null) {
-                if (await addNote(titleController.text, descController.text)) {
-                  Navigator.pop(context);
-                }
-              } else {
-                if (await updateNote(widget.note!.id, titleController.text, descController.text)) {
-                  Navigator.pop(context);
-                }
+              if (await addNote(titleController.text, descController.text)) {
+                Navigator.pop(context);
               }
             },
             child: Text(

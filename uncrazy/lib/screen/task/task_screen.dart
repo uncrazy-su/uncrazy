@@ -5,7 +5,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/screen/add_note/add_note_screen.dart';
+import 'package:uncrazy/screen/add_task/add_task_controller.dart';
 import 'package:uncrazy/screen/add_task/add_task_screen.dart';
+import 'package:uncrazy/screen/edit_note/edit_note_screen.dart';
+import 'package:uncrazy/screen/edit_task/edit_task_screen.dart';
 import 'package:uncrazy/screen/task/task_screen_controller.dart';
 import 'package:uncrazy/screen/task/task_screen_model.dart';
 import 'package:uncrazy/widget/datePicker_widget.dart';
@@ -13,7 +16,11 @@ import 'package:uncrazy/widget/datePicker_widget.dart';
 class TaskScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
   late TaskScreenController taskScreenController;
-  late TaskScreenModel model;
+  //late TaskScreenModel model;
+  List<Task> model = const [
+    Task(1, "title", "2023-05-12", "17:30", "description", 1, 1, 0),
+    Task(2, "title2", "2023-11-03", "17:40", "description", 1, 1, 0),
+  ];
 
   @override
   Widget build(BuildContext context, ref) {
@@ -21,7 +28,7 @@ class TaskScreen extends ConsumerWidget {
 
     List<String> entries = <String>['Task A', 'Task B', 'Task C'];
     taskScreenController = ref.watch(taskScreenVMProvider.notifier);
-    model = ref.watch(taskScreenVMProvider);
+    //model = ref.watch(taskScreenVMProvider);
 
     return SmartRefresher(
         controller: refresher,
@@ -58,7 +65,7 @@ class TaskScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            "  Upcoming  ",
+                            "  Today  ",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -127,41 +134,54 @@ class TaskScreen extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
                       width: screensize.width,
-                      height: 150,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: ListView.builder(
-                        itemCount: model.tasks
-                              .where((element) => DateTime.parse(element.date)
-                                .isAfter(DateTime.now()))
-                              .toList().length,
+                      child: ListView.separated(
+                        itemCount: model
+                            .where((element) => DateTime.parse(element.date)
+                                .isBefore(DateTime.now()))
+                            .toList()
+                            .length,
                         itemBuilder: (BuildContext context, int index) {
-                          List<Task> todayTask = model.tasks
+                          List<Task> todayTask = model
                               .where((element) => DateTime.parse(element.date)
-                                .isAfter(DateTime.now()))
+                                  .isBefore(DateTime.now()))
                               .toList();
-                          return Container(
-                            height: 30,
-                            child: Row(
-                              children: [
-                                CheckboxExample(),
-                                Container(
-                                  width: screensize.width * 0.75,
-                                  color: Colors.white,
-                                  child: Text(
-                                    '${todayTask[index].title}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditTaskScreen()),
+                              );
+                            },
+                            child: Container(
+                              height: 30,
+                              child: Row(
+                                children: [
+                                  CheckboxExample(),
+                                  Container(
+                                    width: screensize.width * 0.75,
+                                    color: Colors.white,
+                                    child: Text(
+                                      "  " + '${todayTask[index].title}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              // child: Center(child: Text('Entry ${entries[index]}')),
                             ),
-                            // child: Center(child: Text('Entry ${entries[index]}')),
                           );
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 10);
                         },
                       ),
                     ),
@@ -200,107 +220,64 @@ class TaskScreen extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
                       width: screensize.width,
-                      height: 150,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: ListView.builder(
-                        itemCount: model.tasks
+                      child: ListView.separated(
+                        itemCount: model
                             .where((element) => DateTime.parse(element.date)
                                 .isBefore(DateTime.now()))
-                                // .isBefore(DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()))))
+                            // .isBefore(DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()))))
                             .toList()
                             .length,
                         itemBuilder: (BuildContext context, int index) {
-                          List<Task> overdueTask = model.tasks
+                          List<Task> overdueTask = model
                               .where((element) => DateTime.parse(element.date)
                                   .isBefore(DateTime.now()))
                               .toList();
-                          return Container(
-                            height: 30,
-                            child: Row(
-                              children: [
-                                CheckboxExample(),
-                                Container(
-                                  width: screensize.width * 0.75,
-                                  color: Colors.white,
-                                  child: Text(
-                                    '${overdueTask[index].title}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditTaskScreen()),
+                              );
+                            },
+                            child: Container(
+                              height: 30,
+                              child: Row(
+                                children: [
+                                  CheckboxExample(),
+                                  Container(
+                                    width: screensize.width * 0.75,
+                                    color: Colors.white,
+                                    child: Row(children: <Widget>[
+                                      Text(
+                                        "  " + '${overdueTask[index].title}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        '${overdueTask[index].date}',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ]),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
-                      ),
-                    ),
-                  ),
-
-                  //collaboration task
-                  SizedBox(height: screensize.height * 0.02),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      width: screensize.width,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "  Collaboration  ",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // Collaboration tasklist
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      width: screensize.width,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: ListView.builder(
-                        itemCount: entries.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: 30,
-                            child: Row(
-                              children: [
-                                CheckboxExample(),
-                                Container(
-                                  width: screensize.width * 0.75,
-                                  color: Colors.white,
-                                  child: Text(
-                                    '${entries[index]}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 10);
                         },
                       ),
                     ),
