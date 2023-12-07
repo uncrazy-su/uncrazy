@@ -9,10 +9,15 @@ import 'package:uncrazy/screen/welcome/welcome_screen.dart';
   - Cannot change the username by the change button (dont know how to implement this)
 */
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends StatefulWidget {
   User user;
   ProfileScreen(this.user);
 
+  @override
+  State<ProfileScreen> createState() => ProfileScreenState();
+}
+
+class ProfileScreenState extends State<ProfileScreen> {
   final emailPhoneController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
@@ -24,7 +29,14 @@ class ProfileScreen extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    super.initState();
+    nameController.text = widget.user.name;
+    emailPhoneController.text = widget.user.email ?? widget.user.phone_no ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
 
     RegExp emailPattern = RegExp(
@@ -93,7 +105,7 @@ class ProfileScreen extends ConsumerWidget {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            controller: nameController..text=user.name,
+                            controller: nameController,
                             readOnly: true,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -132,7 +144,7 @@ class ProfileScreen extends ConsumerWidget {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: nameController..text=user.name,
+                                      controller: nameController,
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -149,15 +161,19 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            nameString = nameController.text;
-                                            Navigator.pop(context);
+                                          nameString = nameController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Change'),
+                                        onPressed: () async {
+                                          if (await updateUser(
+                                              1, nameController.text)) {
+                                            Navigator.pop(context, 'Change');
+                                          }
+                                        },
                                         child: const Text('Change'),
                                       ),
                                     ],
@@ -177,7 +193,7 @@ class ProfileScreen extends ConsumerWidget {
                           TextFormField(
                             // initialValue: "email@mail.com",
                             readOnly: true,
-                            controller: emailPhoneController..text=user.email??user.phone_no??'',
+                            controller: emailPhoneController,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -246,16 +262,28 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            emailPhoneString =
-                                                emailPhoneController.text;
-                                            Navigator.pop(context);
+                                          emailPhoneString =
+                                              emailPhoneController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Change'),
+                                        onPressed: () async {
+                                          if (emailPhoneController.text
+                                              .startsWith('0')) {
+                                            if (await updateUser(
+                                                2, emailPhoneController.text)) {
+                                              Navigator.pop(context);
+                                            }
+                                          } else {
+                                            if (await updateUser(3,
+                                                emailPhoneController.text)) {
+                                                  Navigator.pop(context);
+                                              }
+                                          }
+                                        },
                                         child: const Text('Change'),
                                       ),
                                     ],
@@ -345,8 +373,8 @@ class ProfileScreen extends ConsumerWidget {
                                       TextButton(
                                         onPressed: () {
                                           //setState(() {
-                                            passString = passController.text;
-                                            Navigator.pop(context);
+                                          passString = passController.text;
+                                          Navigator.pop(context);
                                           //});
                                         },
                                         child: const Text('Cancel'),

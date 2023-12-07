@@ -64,4 +64,31 @@ class AuthController extends Controller
             auth()->user()
         , 200);
     }
+
+    public function update(Request $request, $id){
+        $user = auth()->user();
+        if($request->has('name')){
+            $user->update([
+                'name'=> $request['name'],
+            ]);
+        }
+        // else if($request->has('email')){
+        //     $user->update([
+        //         'email'=> $request['email']
+        //     ]);
+        // }
+        // else if($request->has('phone_no')){
+        //     $user->update([
+        //         'phone_no'=> $request['phone_no']
+        //     ]);
+        // }
+        // else if($request->has('password')){
+        //     $user->update([
+        //         'password'=> bcrypt($request['password']),
+        //     ]);
+        // }
+        return response(
+            auth()->user()
+        , 200);
+    }    
 }

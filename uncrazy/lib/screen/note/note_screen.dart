@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:uncrazy/screen/add_note/add_note_controller.dart';
 import 'package:uncrazy/screen/add_note/add_note_screen.dart';
 import 'package:uncrazy/screen/note/note_screen_controller.dart';
 import 'package:uncrazy/screen/note/note_screen_model.dart';
+import 'package:uncrazy/data/note/note.dart';
 
 class NoteScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
@@ -38,7 +40,7 @@ class NoteScreen extends ConsumerWidget {
                     mainAxisSpacing: 5.0,
                     crossAxisSpacing: 5.0,
                     children: List.generate(model.notes.length, (index) {
-                      return gridNote(context, model.notes[index].title, model.notes[index].description);
+                      return gridNote(context, model.notes[index]);
                     }),
                   ),
                 ),
@@ -55,14 +57,16 @@ class NoteScreen extends ConsumerWidget {
               size: 30,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: ((context) => AddNoteScreen()))).then((value) => noteScreenController.getNotes());
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: ((context) => AddNoteScreen())))
+                  .then((value) => noteScreenController.getNotes());
             },
           ),
         ));
   }
 
-  Container gridNote(BuildContext context, String title, String desc) {
+  Container gridNote(BuildContext context, Note note) {
     return Container(
       // width: screensize.width * 0.5,
       // height: screensize.height,
@@ -72,14 +76,15 @@ class NoteScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
-        child: Container(
-          child: Text(title),
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          child: Text(note.title),
         ),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: ((context) => AddNoteScreen())));
+        onPressed: () async {
+          Note viewedNote = await viewNote(note.id);
+          Navigator.of(context).push(MaterialPageRoute(builder: ((context) => AddNoteScreen(note: viewedNote)
+          )));
         },
       ),
     );

@@ -6,18 +6,26 @@ import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/register/register_screen.dart';
 import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uncrazy/data/note/note.dart';
 
 class AddNoteScreen extends StatefulWidget {
-  const AddNoteScreen({super.key});
+  Note? note;
+  AddNoteScreen({this.note});
 
   @override
   State<AddNoteScreen> createState() => _AddNoteScreen();
 }
 
 class _AddNoteScreen extends State<AddNoteScreen> {
-    final titleController = TextEditingController();
+  final titleController = TextEditingController();
   final descController = TextEditingController();
-  String date = "November 12, 2023";
+
+  @override
+  void initState() {
+    titleController.text = widget.note?.title ?? '';
+    descController.text = widget.note?.description ?? '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +35,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
       child: Scaffold(
           extendBodyBehindAppBar: false,
           resizeToAvoidBottomInset: true,
-          backgroundColor: Color(0xFF2B2B2B),
-          // appBar: AppBar(
-          //   backgroundColor: Colors.transparent,
-          //   elevation: 0,
-          //   leading: const BackButton(
-          //     color: Colors.white,
-          //   ),
-          // ),
+          backgroundColor: const Color(0xFF2B2B2B),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -50,15 +51,6 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                           color: Colors.white,
                           fontSize: 35,
                           fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      date,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
                     ),
                   ),
                   SizedBox(height: screensize.height * 0.02),
@@ -222,8 +214,14 @@ class _AddNoteScreen extends State<AddNoteScreen> {
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              if (await addNote(titleController.text, descController.text)) {
-                Navigator.pop(context);
+              if (widget.note == null) {
+                if (await addNote(titleController.text, descController.text)) {
+                  Navigator.pop(context);
+                }
+              } else {
+                if (await updateNote(widget.note!.id, titleController.text, descController.text)) {
+                  Navigator.pop(context);
+                }
               }
             },
             child: Text(
