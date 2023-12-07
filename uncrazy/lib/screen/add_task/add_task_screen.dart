@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:day_picker/day_picker.dart';
+import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/screen/add_task/add_task_controller.dart';
-import 'package:uncrazy/screen/note/note_screen.dart';
-import 'package:uncrazy/screen/profile/profile_screen.dart';
-import 'package:uncrazy/screen/register/register_screen.dart';
-import 'package:uncrazy/screen/task/task_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/widget/collaboration_widget.dart';
 import 'package:uncrazy/widget/reminder_widget.dart';
 import 'package:uncrazy/widget/repetition_widget.dart';
 
+// ignore: must_be_immutable
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+  Task? task;
+  // ignore: use_key_in_widget_constructors
+  AddTaskScreen([this.task]);
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreen();
@@ -37,7 +35,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   DateTime timePlease1 = DateTime.now();
 
   int? _value = 1;
-  List<String> tag_List = <String>[
+  List<String> tagList = <String>[
     "assignment",
     "event",
     "social",
@@ -48,9 +46,17 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   ];
 
   @override
+  void initState() {
+    titleController.text = widget.task?.title ?? '';
+    descController.text = widget.task?.description ?? '';
+    dateController.text =
+        '${widget.task?.date.toString() ?? ''} ${widget.task?.time.toString() ?? ''}';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
-    //String date = DateFormat('DD-MM-YYYY').format(DateTime.now());
 
     return SafeArea(
       child: Scaffold(
@@ -72,7 +78,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                  const Center(
                     child: Text(
                       'Task',
                       style: TextStyle(
@@ -81,15 +87,6 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // Center(
-                  //   child: Text(
-                  //     date,
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontSize: 18,
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(height: screensize.height * 0.02),
 
                   //Title
@@ -233,7 +230,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                                                 'yyyy-MM-dd')
                                                             .format(
                                                                 datePlease1) +
-                                                        "   " +
+                                                        " " +
                                                         DateFormat.Hm().format(
                                                             timePlease1);
                                                     Navigator.pop(context);
@@ -393,10 +390,10 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                               actions: <Widget>[
                                 Wrap(
                                   children: List.generate(
-                                    tag_List.length,
+                                    tagList.length,
                                     (int index) {
                                       return ChoiceChip(
-                                        label: Text("${tag_List[index]}"),
+                                        label: Text(tagList[index]),
                                         selectedColor: Colors.blue,
                                         selected: _value == index,
                                         onSelected: (bool selected) {
@@ -433,8 +430,63 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   Container bottomButton(BuildContext context) {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          widget.task != null
+              ? TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    backgroundColor: Colors.orange,
+                    padding:
+                        EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+                    side: BorderSide(color: Colors.white, width: 1),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Colors.black,
+                        //title
+                        title: Text(
+                          "Are you sure to delete?",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        //no description
+
+                        //action = button change or cancel
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              int count = 0;
+                              Navigator.of(context)
+                                  .popUntil((_) => count++ >= 2);
+                            },
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Delete Task',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              : const SizedBox(),
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -444,17 +496,32 @@ class _AddTaskScreen extends State<AddTaskScreen> {
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              if (await addTask(
-                  titleController.text,
-                  dateController.text.split(' ').first,
-                  dateController.text.split(' ').last,
-                  descController.text,
-                  0,
-                  0)) {
-                Navigator.pop(context);
+              if (widget.task == null) {
+                if (await addTask(
+                    titleController.text,
+                    dateController.text.split(' ').first,
+                    dateController.text.split(' ').last,
+                    descController.text,
+                    0,
+                    0)) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                }
+              } else {
+                if (await updateTask(
+                    widget.task?.id ?? 0,
+                    titleController.text,
+                    dateController.text.split(' ').first,
+                    dateController.text.split(' ').last,
+                    descController.text,
+                    0,
+                    0)) {
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                }
               }
             },
-            child: Text(
+            child: const Text(
               'Save Task',
               style: TextStyle(
                   fontSize: 20,

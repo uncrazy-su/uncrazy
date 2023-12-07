@@ -24,7 +24,7 @@ class TaskController extends Controller
         );
     }
 
-    public function index(Request $request, $id){
+    public function index(Request $request){
         $tasks = auth()->user()->tasks;
         return response(
             $tasks, 200
@@ -40,12 +40,12 @@ class TaskController extends Controller
 
     public function update(Request $request, $id){
         $task = Task::find($id);
-        if($request->has('project_status')){
+        if($request->has('status')){
             $task->update([
-                'status' => $request['task_status']
+                'status' => $request['status']
             ]);
         }
-        else if($request->has('project_name')){
+        else if($request->has('title')){
             $task->update([
                 'title'=> $request['title'],
                 'description'=> $request['description'],

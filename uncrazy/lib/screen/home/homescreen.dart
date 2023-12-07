@@ -8,6 +8,7 @@ import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/widget/search_widget.dart';
 
+// ignore: must_be_immutable
 class HomeScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
   final StateProvider<bool> isSearchProvider = StateProvider((ref) => false);
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
   late HomeScreenController homeScreenController;
   late HomeScreenModel model;
 
-//  bool isSearch = false;
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -55,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
             },
             child: Scaffold(
               resizeToAvoidBottomInset: true,
-              backgroundColor: Color(0xFF2B2B2B),
+              backgroundColor: const Color(0xFF2B2B2B),
 
               //Appbar for the tabbar, welcome message, and profile picture
               appBar: AppBar(

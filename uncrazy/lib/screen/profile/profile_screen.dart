@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/data/user/user.dart';
 import 'package:uncrazy/screen/profile/profile_screen_controller.dart';
 import 'package:uncrazy/screen/welcome/welcome_screen.dart';
@@ -12,15 +11,10 @@ import 'package:image_cropper/image_cropper.dart';
   - Cannot change the username by the change button (dont know how to implement this)
 */
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends StatefulWidget {
   User user;
   ProfileScreen(this.user);
 
-  @override
-  State<ProfileScreen> createState() => ProfileScreenState();
-}
-
-class ProfileScreenState extends State<ProfileScreen> {
   @override
   State<ProfileScreen> createState() => _ProfileScreen();
 }
@@ -52,7 +46,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
 
     RegExp emailPattern = RegExp(
@@ -132,7 +126,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            controller: nameController..text=user.name,
+                            controller: nameController..text = widget.user.name,
                             readOnly: true,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -171,7 +165,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: nameController..text=user.name,
+                                      controller: nameController
+                                        ..text = widget.user.name,
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -220,7 +215,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                           TextFormField(
                             // initialValue: "email@mail.com",
                             readOnly: true,
-                            controller: emailPhoneController..text=user.email??user.phone_no??'',
+                            controller: emailPhoneController
+                              ..text = widget.user.email ??
+                                  widget.user.phone_no ??
+                                  '',
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -305,10 +303,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                                               Navigator.pop(context);
                                             }
                                           } else {
-                                            if (await updateUser(3,
-                                                emailPhoneController.text)) {
-                                                  Navigator.pop(context);
-                                              }
+                                            if (await updateUser(
+                                                3, emailPhoneController.text)) {
+                                              Navigator.pop(context);
+                                            }
                                           }
                                         },
                                         child: const Text('Change'),

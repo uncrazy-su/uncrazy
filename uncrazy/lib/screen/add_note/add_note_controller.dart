@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:uncrazy/data/api_response.dart';
 import 'package:uncrazy/data/constant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uncrazy/data/note/note.dart';
 
 Future<bool> addNote(String title, String desc) async {

@@ -16,19 +16,18 @@ import 'package:uncrazy/widget/datePicker_widget.dart';
 class TaskScreen extends ConsumerWidget {
   final refresher = RefreshController(initialRefresh: true);
   late TaskScreenController taskScreenController;
-  //late TaskScreenModel model;
-  List<Task> model = const [
-    Task(1, "title", "2023-05-12", "17:30", "description", 1, 1, 0),
-    Task(2, "title2", "2023-11-03", "17:40", "description", 1, 1, 0),
-  ];
+  late TaskScreenModel model;
+  // List<Task> model = const [
+  //   Task(1, "title", "2023-05-12", "17:30", "description", 1, 1, 0),
+  //   Task(2, "title2", "2023-11-03", "17:40", "description", 1, 1, 0),
+  // ];
 
   @override
   Widget build(BuildContext context, ref) {
     Size screensize = MediaQuery.of(context).size;
 
-    List<String> entries = <String>['Task A', 'Task B', 'Task C'];
     taskScreenController = ref.watch(taskScreenVMProvider.notifier);
-    //model = ref.watch(taskScreenVMProvider);
+    model = ref.watch(taskScreenVMProvider);
 
     return SmartRefresher(
         controller: refresher,
@@ -51,7 +50,7 @@ class TaskScreen extends ConsumerWidget {
                 children: [
                   //Today Task
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
                       width: screensize.width,
                       height: 30,
@@ -140,13 +139,13 @@ class TaskScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: ListView.separated(
-                        itemCount: model
+                        itemCount: model.tasks
                             .where((element) => DateTime.parse(element.date)
                                 .isBefore(DateTime.now()))
                             .toList()
                             .length,
                         itemBuilder: (BuildContext context, int index) {
-                          List<Task> todayTask = model
+                          List<Task> todayTask = model.tasks
                               .where((element) => DateTime.parse(element.date)
                                   .isBefore(DateTime.now()))
                               .toList();
@@ -155,8 +154,9 @@ class TaskScreen extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => EditTaskScreen()),
-                              );
+                                    builder: (context) =>
+                                        AddTaskScreen(model.tasks[index])),
+                              ).then((value) => taskScreenController.getTasks());
                             },
                             child: Container(
                               height: 30,
@@ -226,14 +226,14 @@ class TaskScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: ListView.separated(
-                        itemCount: model
+                        itemCount: model.tasks
                             .where((element) => DateTime.parse(element.date)
                                 .isBefore(DateTime.now()))
                             // .isBefore(DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()))))
                             .toList()
                             .length,
                         itemBuilder: (BuildContext context, int index) {
-                          List<Task> overdueTask = model
+                          List<Task> overdueTask = model.tasks
                               .where((element) => DateTime.parse(element.date)
                                   .isBefore(DateTime.now()))
                               .toList();
