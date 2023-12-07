@@ -81,15 +81,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // Center(
-                  //   child: Text(
-                  //     date,
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontSize: 18,
-                  //     ),
-                  //   ),
-                  // ),
+
                   SizedBox(height: screensize.height * 0.02),
 
                   //Title
@@ -120,6 +112,13 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                   ),
                   TextFormField(
                     controller: titleController,
+                    validator: (titleValue) {
+                      var passNonNullValue = titleValue ?? "";
+                      if (passNonNullValue.isEmpty) {
+                        return ("Title cannot be empty");
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -162,6 +161,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                   ),
                   Stack(children: [
                     TextField(
+                      readOnly: true,
                       controller: dateController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(

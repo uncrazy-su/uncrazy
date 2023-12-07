@@ -19,7 +19,29 @@ class TaskScreen extends ConsumerWidget {
   //late TaskScreenModel model;
   List<Task> model = const [
     Task(1, "title", "2023-05-12", "17:30", "description", 1, 1, 0),
-    Task(2, "title2", "2023-11-03", "17:40", "description", 1, 1, 0),
+    Task(
+        2,
+        "title2222222222222222222222222222222222222222222222222222222222222222222222222",
+        "2023-11-03",
+        "17:40",
+        "description",
+        1,
+        1,
+        0),
+  ];
+
+  final selectedIndexProvider = StateProvider<int>((ref) => 0);
+
+  int _value = 0;
+  List<String> tag_List = <String>[
+    "all",
+    "assignment",
+    "event",
+    "social",
+    "health",
+    "class",
+    "work",
+    "fun"
   ];
 
   @override
@@ -29,6 +51,8 @@ class TaskScreen extends ConsumerWidget {
     List<String> entries = <String>['Task A', 'Task B', 'Task C'];
     taskScreenController = ref.watch(taskScreenVMProvider.notifier);
     //model = ref.watch(taskScreenVMProvider);
+
+    final selectedIndex = ref.watch(selectedIndexProvider);
 
     return SmartRefresher(
         controller: refresher,
@@ -49,6 +73,25 @@ class TaskScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        tag_List.length,
+                        (int index) {
+                          return ChoiceChip(
+                            label: Text("${tag_List[index]}"),
+                            selectedColor: Colors.orange,
+                            selected: selectedIndex == index,
+                            onSelected: (bool selected) {
+                              ref.read(selectedIndexProvider.notifier).state =
+                                  (selected ? index : null)!;
+                            },
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
                   //Today Task
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -158,6 +201,7 @@ class TaskScreen extends ConsumerWidget {
                                         color: Colors.black,
                                         fontSize: 20,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
@@ -240,11 +284,15 @@ class TaskScreen extends ConsumerWidget {
                                     width: screensize.width * 0.75,
                                     color: Colors.white,
                                     child: Row(children: <Widget>[
-                                      Text(
-                                        "  " + '${overdueTask[index].title}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
+                                      Expanded(
+                                        flex: 8,
+                                        child: Text(
+                                          "  " + '${overdueTask[index].title}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Spacer(),
