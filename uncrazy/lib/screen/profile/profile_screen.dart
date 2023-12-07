@@ -339,10 +339,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            obscureText: isObscureText,
+                            obscureText: true,
                             // initialValue: "TurnUP",
                             readOnly: true,
-                            controller: passController,
+                            // controller: passController,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -412,7 +412,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                                                 : Icons.visibility,
                                             color: Colors.white,
                                           ),
-                                          onPressed: _togglePasswordVisibility,
+                                          onPressed: () {
+                                            _togglePasswordVisibility();
+                                          },
                                         ),
                                       ),
                                       style: TextStyle(
