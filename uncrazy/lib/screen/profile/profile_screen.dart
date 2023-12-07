@@ -34,8 +34,6 @@ class _ProfileScreen extends State<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
 
   bool isObscureText = true;
-
-  //For obscuretext visibility
   void _togglePasswordVisibility() {
     if (isObscureText == false) {
       setState(() {
@@ -341,7 +339,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            obscureText: true,
+                            obscureText: isObscureText,
                             // initialValue: "TurnUP",
                             readOnly: true,
                             controller: passController,
@@ -382,18 +380,16 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: emailPhoneController,
+                                      obscureText: isObscureText,
+                                      controller: passController,
                                       validator: (PassCurrentValue) {
                                         var passNonNullValue =
                                             PassCurrentValue ?? "";
                                         if (passNonNullValue.isEmpty) {
                                           return ("Password is required");
                                         } else if (passNonNullValue.length <
-                                            6) {
-                                          return ("Password Must be more than 8 characters");
-                                        } else if (!passPattern
-                                            .hasMatch(passNonNullValue)) {
-                                          return ("Password should contain upper,lower,digit and Special character ");
+                                            8) {
+                                          return ("Password must be at least 8 characters");
                                         }
                                         return null;
                                       },
@@ -404,6 +400,11 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide:
                                                 BorderSide(color: Colors.blue)),
+                                        labelText: "Password",
+                                        labelStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isObscureText

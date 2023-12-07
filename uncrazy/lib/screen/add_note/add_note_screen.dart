@@ -84,8 +84,8 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                   TextFormField(
                     controller: titleController,
                     validator: (titleValue) {
-                      var passNonNullValue = titleValue ?? "";
-                      if (passNonNullValue.isEmpty) {
+                      var title = titleValue ?? "";
+                      if (title.isEmpty) {
                         return ("Title cannot be empty");
                       }
                       return null;
@@ -177,7 +177,8 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                   Navigator.pop(context);
                 }
               } else {
-                if (await updateNote(widget.note!.id, titleController.text, descController.text)) {
+                if (await updateNote(widget.note!.id, titleController.text,
+                    descController.text)) {
                   Navigator.pop(context);
                 }
               }

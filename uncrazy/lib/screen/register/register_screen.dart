@@ -162,7 +162,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                       //Password, need validation + eye
                       TextFormField(
-                        obscureText: true,
+                        obscureText: isObscureText,
                         controller: passController,
                         validator: (PassCurrentValue) {
                           var passNonNullValue = PassCurrentValue ?? "";
