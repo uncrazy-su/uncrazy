@@ -218,7 +218,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                     );
                   },
                   child: Text(
-                    'Delete Task',
+                    'Delete Note',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
