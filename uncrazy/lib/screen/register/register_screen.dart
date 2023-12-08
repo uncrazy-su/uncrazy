@@ -112,8 +112,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                       SizedBox(height: screensize.height * 0.05),
 
                       //Username, need validation
-                      TextField(
+                      TextFormField(
                         controller: nameController,
+                        validator: (nameController) {
+                          var nonNullValue = nameController ?? '';
+                          if (nonNullValue.isEmpty) {
+                            return ("Username is required");
+                          }
+                        },
                         decoration: const InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue)),

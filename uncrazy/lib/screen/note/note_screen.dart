@@ -69,58 +69,54 @@ class _NoteScreen extends ConsumerState<NoteScreen> {
     );
   }
 
-  Container gridNote(BuildContext context, Note note) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 5, color: Colors.grey),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(
-                  builder: ((context) => AddNoteScreen(note))))
-              .then((value) => widget.noteScreenController.getNotes());
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  note.title,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.combine([
-                        TextDecoration.underline,
-                        TextDecoration.overline,
-                      ]),
-                      decorationStyle: TextDecorationStyle.dashed),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  " ",
-                  style: TextStyle(
-                    fontSize: 10,
-                  ),
-                ),
-                Text(
-                  note.description ?? '',
-                  style: TextStyle(
+  Widget gridNote(BuildContext context, Note note) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .push(
+                MaterialPageRoute(builder: ((context) => AddNoteScreen(note))))
+            .then((value) => widget.noteScreenController.getNotes());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 5, color: Colors.grey),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                note.title,
+                style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                )
-              ],
-            ),
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.combine([
+                      TextDecoration.underline,
+                      TextDecoration.overline,
+                    ]),
+                    decorationStyle: TextDecorationStyle.dashed),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                " ",
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+              ),
+              Text(
+                note.description ?? '',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
           ),
         ),
       ),
