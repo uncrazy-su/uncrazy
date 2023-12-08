@@ -167,8 +167,65 @@ class _AddNoteScreen extends State<AddNoteScreen> {
   Container bottomButton(BuildContext context) {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          widget.note != null
+              ? TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    backgroundColor: Colors.orange,
+                    padding:
+                        EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+                    side: BorderSide(color: Colors.white, width: 1),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: Colors.black,
+                        //title
+                        title: const Text(
+                          "Are you sure to delete?",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        //no description
+
+                        //action = button change or cancel
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              int count = 0;
+                              if (await deleteNote(widget.note?.id ?? 0)) {
+                                Navigator.of(context)
+                                    .popUntil((_) => count++ >= 2);
+                              }
+                            },
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Delete Task',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              : const SizedBox(),
           TextButton(
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(

@@ -10,7 +10,11 @@ import 'package:uncrazy/screen/home/home_screen_model.dart';
 // ignore: must_be_immutable
 class TaskScreen extends ConsumerStatefulWidget {
   HomeScreenController taskScreenController;
-  TaskScreen({super.key, required this.taskScreenController});
+  Function onDateChange;
+  TaskScreen(
+      {super.key,
+      required this.taskScreenController,
+      required this.onDateChange});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TaskScreen();
@@ -108,7 +112,8 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
                         DateFormat('yyyy-MM-dd').format(pickedDate) ==
                                 DateFormat('yyyy-MM-dd').format(DateTime.now())
                             ? "  Today  "
-                            : DateFormat('yyyy-MM-dd').format(pickedDate),
+                            : "  " +
+                                DateFormat('yyyy-MM-dd').format(pickedDate),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -155,6 +160,7 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
                                               setState(() {
                                                 pickedDate = tmp;
                                               });
+                                              widget.onDateChange(tmp);
                                               widget.taskScreenController
                                                   .getTasksByDate(
                                                       DateFormat('yyyy-MM-dd')
@@ -220,17 +226,31 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
                                   //});
                                 },
                               ),
+
                               Container(
                                 width: screensize.width * 0.75,
                                 color: Colors.white,
-                                child: Text(
-                                  "  " '${model.tasks[index].title}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
+                                child: Row(children: <Widget>[
+                                  Expanded(
+                                    flex: 8,
+                                    child: Text(
+                                      "  " '${model.tasks[index].title}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                  Spacer(),
+                                  Text(
+                                    '${model.tasks[index].time}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ]),
                               ),
                             ],
                           ),
@@ -339,7 +359,7 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
                                   Text(
                                     '${overdueTask[index].date}',
                                     style: TextStyle(
-                                      color: Colors.orange,
+                                      color: Colors.black,
                                       fontSize: 15,
                                     ),
                                   ),

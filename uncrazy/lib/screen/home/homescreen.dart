@@ -33,6 +33,8 @@ class _HomeScreen extends ConsumerState<HomeScreen>
   int tabIndex = 0;
   late TabController tabController2;
 
+  DateTime pickedDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -70,6 +72,8 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                 homeScreenController.getProfile();
                 if (tabController2.index == 0) {
                   homeScreenController.getTasksByDate(
+                      DateFormat('yyyy-MM-dd').format(pickedDate));
+                  homeScreenController.getTasksOverdue(
                       DateFormat('yyyy-MM-dd').format(DateTime.now()));
                   homeScreenController.getTasksOverdue(DateFormat('yyyy-MM-dd').format(DateTime.now()));
                 } else {
@@ -235,7 +239,13 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                         controller: tabController2,
                         children: [
                           TaskScreen(
-                              taskScreenController: homeScreenController),
+                            taskScreenController: homeScreenController,
+                            onDateChange: (val) {
+                              setState(() {
+                                pickedDate = val;
+                              });
+                            },
+                          ),
                           NoteScreen(
                               noteScreenController: homeScreenController),
                         ],
