@@ -574,7 +574,6 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       repetitionDay,
                       0,
                       tagIndex)) {
-                      tagIndex)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
