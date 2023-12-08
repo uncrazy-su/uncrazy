@@ -39,7 +39,7 @@ class TaskController extends Controller
     }
 
     public function indexOverdue(Request $request){
-        $tasks = auth()->user()->tasks->where('date', '<', $request['date'])->sortBy('time')->sortBy('status')->values();
+        $tasks = auth()->user()->tasks->where('date', '<', $request['date'])->where('status', 0)->sortBy('time')->sortBy('status')->values();
         return response(
             $tasks, 200
         );

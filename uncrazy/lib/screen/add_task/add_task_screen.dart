@@ -571,7 +571,6 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       dateController.text,
                       timeController.text,
                       descController.text,
-                      repetitionDay,
                       0,
                       tagIndex)) {
                     // ignore: use_build_context_synchronously
