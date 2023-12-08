@@ -461,8 +461,10 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                             setState(() {
                                               tagIndex =
                                                   (selected ? index : null)!;
+                                              tagIndex = selected ? index : -1;
                                               print(tagIndex);
                                             });
+                                            Navigator.pop(context);
                                           },
                                         );
                                       },
@@ -472,10 +474,10 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                               );
                             },
                           ),
-                        );
+                        ).then((_) => setState(() {}));
                       },
                       child: Text(
-                        tagIndex==-1 ? 'Add tag': tagIndex.toString(),
+                        tagIndex == -1 ? 'Add tag' : '${tagList[tagIndex]}',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.white,
@@ -571,6 +573,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       descController.text,
                       repetitionDay,
                       0,
+                      tagIndex)) {
                       tagIndex)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);

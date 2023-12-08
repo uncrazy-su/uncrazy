@@ -52,6 +52,7 @@ dependencies:
   flutter_hooks: ^0.20.3
   hooks_riverpod: ^2.4.9
   shimmer: ^3.0.0
+  flutter_local_notifications: ^16.2.0
   # intl: ^0.18.1
  
   
