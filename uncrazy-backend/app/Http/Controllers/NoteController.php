@@ -56,4 +56,12 @@ class NoteController extends Controller
             'message'=>'Note has been deleted'
         ], 200);
     }
+
+    public function search(Request $request){
+        $note = Note::where('user_id', auth()->user()->id)->where('title','LIKE', '%'.$request['title']. '%')->get();//->whereLike('title', $request['title'])->values();
+        return response(
+            $note, 200
+        );
+    }
+
 }

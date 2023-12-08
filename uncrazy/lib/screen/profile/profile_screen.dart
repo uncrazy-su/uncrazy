@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:uncrazy/data/user/user.dart';
@@ -32,10 +33,27 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  PickedFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  final imagePicker = ImagePicker();
 
   bool isObscureText = true;
+
+  String? getStringImage(File? file) {
+    if (file == null) return null;
+    return base64Encode(file.readAsBytesSync());
+  }
+
+  Future<String> getImage() async {
+    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+      _imageFile = File(pickedImage.path);        
+      }); 
+      return getStringImage(_imageFile) ?? '';
+    }
+    return '';
+  }
+
   void _togglePasswordVisibility() {
     if (isObscureText == false) {
       setState(() {
@@ -48,17 +66,16 @@ class _ProfileScreen extends State<ProfileScreen> {
     }
   }
 
-  void _pickImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = pickedFile;
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
+  // Future<String> _pickImage() async {
+  //   final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
+  //   if (pickedImage != null) {
+  //     setState(() {
+  //       _imageFile = File(pickedImage.path) as PickedFile?;
+  //     });
+  //     return getStringImage(_imageFile as File?) ?? '';
+  //   }
+  //   return '';
+  // }
 
   @override
   void initState() {
@@ -111,19 +128,30 @@ class _ProfileScreen extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(250),
                           border: Border.all(color: Colors.black, width: 5),
                         ),
-                        child: _imageFile == null
-                            ? CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("assets/images/logo.png"),
-                              )
-                            : ClipOval(
-                                child: Image.file(
-                                  File(_imageFile!.path),
-                                  width: 250,
-                                  height: 250,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                        child:_imageFile != null
+                                ? ClipOval(
+                                    child: Image.file(
+                                      File(_imageFile!.path),
+                                      width: 250,
+                                      height: 250,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ) 
+                                  :widget.user.image != null
+                            ? Container(
+                                width: 200,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            '${widget.user.image}'),
+                                        fit: BoxFit.cover)))
+                            : 
+                                CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("assets/images/logo.png"),
+                                  ),
                       ),
                       Positioned(
                         bottom: 25,
@@ -134,8 +162,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                             color: Colors.white,
                             size: 50,
                           ),
-                          onPressed: () {
-                            _pickImage();
+                          onPressed: () async {
+                            String image = await getImage();
+                            if (image != '') {
+                              print('image');
+                              await updateUser(0, image);
+                            }
                           },
                         ),
                       ),

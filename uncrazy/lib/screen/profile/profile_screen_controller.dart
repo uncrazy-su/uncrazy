@@ -33,7 +33,10 @@ Future<bool> updateUser(int paramType, String updatedParam) async {
         .put(
           Uri.parse(userURL),
           headers: await requestHeaders(),
-           body: paramType == 1?
+           body: 
+           paramType == 0?
+                json.encode({'image': updatedParam}):
+           paramType == 1?
                json.encode({'name': updatedParam})
           : paramType == 2
               ? json.encode({'phone_no': updatedParam})

@@ -82,6 +82,12 @@ class AuthController extends Controller
                 'phone_no'=> $request['phone_no']
             ]);
         }
+        else if($request->has('image')){
+            $image = $this->saveImage($request->image, 'profiles');
+            $user->update([
+                'image'=>$image
+            ]);
+        }
         else if($request->has('password')){
             $user->update([
                 'password'=> bcrypt($request['password']),

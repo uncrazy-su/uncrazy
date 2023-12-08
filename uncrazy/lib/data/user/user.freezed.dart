@@ -26,6 +26,8 @@ mixin _$User {
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'phone_no')
   String? get phone_no => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image')
+  String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'email')
   String? get email => throw _privateConstructorUsedError;
   @JsonKey(name: 'token')
@@ -45,6 +47,7 @@ abstract class $UserCopyWith<$Res> {
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'phone_no') String? phone_no,
+      @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'token') String? token});
 }
@@ -65,6 +68,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? id = null,
     Object? name = null,
     Object? phone_no = freezed,
+    Object? image = freezed,
     Object? email = freezed,
     Object? token = freezed,
   }) {
@@ -80,6 +84,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       phone_no: freezed == phone_no
           ? _value.phone_no
           : phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -104,6 +112,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'phone_no') String? phone_no,
+      @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'token') String? token});
 }
@@ -121,6 +130,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? phone_no = freezed,
+    Object? image = freezed,
     Object? email = freezed,
     Object? token = freezed,
   }) {
@@ -136,6 +146,10 @@ class __$$UserImplCopyWithImpl<$Res>
       freezed == phone_no
           ? _value.phone_no
           : phone_no // ignore: cast_nullable_to_non_nullable
+              as String?,
+      freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       freezed == email
           ? _value.email
@@ -156,6 +170,7 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'id') this.id,
       @JsonKey(name: 'name') this.name,
       @JsonKey(name: 'phone_no') this.phone_no,
+      @JsonKey(name: 'image') this.image,
       @JsonKey(name: 'email') this.email,
       @JsonKey(name: 'token') this.token);
 
@@ -172,6 +187,9 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'phone_no')
   final String? phone_no;
   @override
+  @JsonKey(name: 'image')
+  final String? image;
+  @override
   @JsonKey(name: 'email')
   final String? email;
   @override
@@ -180,7 +198,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, phone_no: $phone_no, email: $email, token: $token)';
+    return 'User(id: $id, name: $name, phone_no: $phone_no, image: $image, email: $email, token: $token)';
   }
 
   @override
@@ -192,6 +210,7 @@ class _$UserImpl implements _User {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phone_no, phone_no) ||
                 other.phone_no == phone_no) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.token, token) || other.token == token));
   }
@@ -199,7 +218,7 @@ class _$UserImpl implements _User {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, phone_no, email, token);
+      Object.hash(runtimeType, id, name, phone_no, image, email, token);
 
   @JsonKey(ignore: true)
   @override
@@ -220,6 +239,7 @@ abstract class _User implements User {
       @JsonKey(name: 'id') final int id,
       @JsonKey(name: 'name') final String name,
       @JsonKey(name: 'phone_no') final String? phone_no,
+      @JsonKey(name: 'image') final String? image,
       @JsonKey(name: 'email') final String? email,
       @JsonKey(name: 'token') final String? token) = _$UserImpl;
 
@@ -234,6 +254,9 @@ abstract class _User implements User {
   @override
   @JsonKey(name: 'phone_no')
   String? get phone_no;
+  @override
+  @JsonKey(name: 'image')
+  String? get image;
   @override
   @JsonKey(name: 'email')
   String? get email;

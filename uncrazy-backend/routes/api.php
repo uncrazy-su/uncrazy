@@ -31,11 +31,14 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::get('/tasks/{id}', [TaskController::class, 'show']);
     Route::put('/tasks/{id}', [TaskController::class, 'update']);
     Route::delete('/tasks/{id}', [TaskController::class, 'delete']);
+    Route::post('/tasks/search', [TaskController::class, 'search']);
     
     Route::get('/notes', [NoteController::class,'index']);
     Route::post('/notes', [NoteController::class, 'create']);
     Route::get('/notes/{id}', [NoteController::class, 'show']);
     Route::put('/notes/{id}', [NoteController::class, 'update']);
     Route::delete('/notes/{id}', [NoteController::class, 'delete']);
+    Route::post('/notes/search', [NoteController::class, 'search']);
+
     
 });

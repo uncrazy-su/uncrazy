@@ -57,8 +57,9 @@ class _AddTaskScreen extends State<AddTaskScreen> {
     titleController.text = widget.task?.title ?? '';
     descController.text = widget.task?.description ?? '';
     dateController.text =
-        '${widget.task?.date.toString() ?? ''} ${widget.task?.time.toString() ?? ''}';
-
+        widget.task?.date.toString()??'';
+    timeController.text= widget.task?.time.toString()??'';
+    
     tagIndex = widget.task?.tag ?? -1;
 
     super.initState();
@@ -459,6 +460,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                           selected: tagIndex == index,
                                           onSelected: (bool selected) {
                                             setState(() {
+                                              tagIndex =
+                                                  (selected ? index : null)!;
                                               tagIndex = selected ? index : -1;
                                               print(tagIndex);
                                             });
@@ -569,7 +572,6 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       dateController.text,
                       timeController.text,
                       descController.text,
-                      repetitionDay,
                       0,
                       tagIndex)) {
                     // ignore: use_build_context_synchronously

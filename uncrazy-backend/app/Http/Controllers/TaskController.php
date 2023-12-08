@@ -39,7 +39,7 @@ class TaskController extends Controller
     }
 
     public function indexOverdue(Request $request){
-        $tasks = auth()->user()->tasks->where('date', '<', $request['date'])->sortBy('time')->sortBy('status')->values();
+        $tasks = auth()->user()->tasks->where('date', '<', $request['date'])->where('status', 0)->sortBy('time')->sortBy('status')->values();
         return response(
             $tasks, 200
         );
@@ -47,6 +47,13 @@ class TaskController extends Controller
 
     public function indexByTag(Request $request){
         $tasks = auth()->user()->tasks->where('date', '=', $request['date'])->where('tag','=', $request['tag'])->sortBy('time')->sortBy('status')->values();
+        return response(
+            $tasks, 200
+        );
+    }
+
+    public function search(Request $request){
+        $tasks = Task::where('user_id', auth()->user()->id)->where('title','LIKE', '%'.$request['title']. '%')->get();//->whereLike('title', $request['title'])->values();
         return response(
             $tasks, 200
         );
