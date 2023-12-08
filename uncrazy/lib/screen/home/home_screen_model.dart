@@ -12,6 +12,7 @@ class HomeScreenModel with _$HomeScreenModel{
         @Default([]) List<Note> notes,
         @Default([]) List<Task> tasks,
         @Default([]) List<Task> tasksOverdue,
+        
     })= _HomeScreenModel;
 
   factory HomeScreenModel.fromJson(Map<String,Object?>json)=>_$HomeScreenModelFromJson(json);

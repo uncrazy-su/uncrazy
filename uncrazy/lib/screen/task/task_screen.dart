@@ -6,6 +6,7 @@ import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/screen/add_task/add_task_screen.dart';
 import 'package:uncrazy/screen/home/home_screen_controller.dart';
 import 'package:uncrazy/screen/home/home_screen_model.dart';
+import 'package:uncrazy/screen/home/homescreen.dart';
 
 // ignore: must_be_immutable
 class TaskScreen extends ConsumerStatefulWidget {
@@ -50,6 +51,9 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
     model = ref.watch(homeScreenVMProvider);
+
+    final taskContainerText = ref.watch(sharedDataProvider).data;
+    print(taskContainerText);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -109,11 +113,14 @@ class _TaskScreen extends ConsumerState<TaskScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        DateFormat('yyyy-MM-dd').format(pickedDate) ==
-                                DateFormat('yyyy-MM-dd').format(DateTime.now())
-                            ? "  Today  "
-                            : "  " +
-                                DateFormat('yyyy-MM-dd').format(pickedDate),
+                        taskContainerText == 0
+                            ? DateFormat('yyyy-MM-dd').format(pickedDate) ==
+                                    DateFormat('yyyy-MM-dd')
+                                        .format(DateTime.now())
+                                ? "  Today  "
+                                : "  " +
+                                    DateFormat('yyyy-MM-dd').format(pickedDate)
+                            : '  Search   ',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,

@@ -109,6 +109,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
     Size screensize = MediaQuery.of(context).size;
     final isSearch = ref.watch(isSearchProvider);
     final searchIndicator = ref.watch(searchIndicatorProvider);
+    final taskContainerText = ref.watch(sharedDataProvider);
 
     return SafeArea(
         child: DefaultTabController(
@@ -264,12 +265,18 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                                     ref
                                         .read(searchIndicatorProvider.notifier)
                                         .state = Colors.orange;
+                                    ref
+                                        .read(sharedDataProvider.notifier)
+                                        .setData(1);
                                   } else {
                                     ref.read(isSearchProvider.notifier).state =
                                         false;
                                     ref
                                         .read(searchIndicatorProvider.notifier)
                                         .state = Colors.white;
+                                    ref
+                                        .read(sharedDataProvider.notifier)
+                                        .setData(0);
                                   }
                                   searchController.clear();
                                 },
@@ -311,3 +318,15 @@ class _HomeScreen extends ConsumerState<HomeScreen>
             )));
   }
 }
+
+class ShareData extends ChangeNotifier {
+  int data = 0;
+  int get fetchdata => data;
+  void setData(int newData) {
+    data = newData;
+    notifyListeners();
+  }
+}
+
+final sharedDataProvider =
+    ChangeNotifierProvider<ShareData>(((ref) => ShareData()));
