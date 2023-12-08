@@ -59,7 +59,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
     dateController.text =
         widget.task?.date.toString()??'';
     timeController.text= widget.task?.time.toString()??'';
-    
+
     tagIndex = widget.task?.tag ?? -1;
 
     super.initState();
