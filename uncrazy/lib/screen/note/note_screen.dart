@@ -62,7 +62,8 @@ class _NoteScreen extends ConsumerState<NoteScreen> {
         ),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: ((context) => AddNoteScreen())));
+              .push(MaterialPageRoute(builder: ((context) => AddNoteScreen())))
+              .then((value) => widget.noteScreenController.getNotes());
         },
       ),
     );
@@ -75,20 +76,77 @@ class _NoteScreen extends ConsumerState<NoteScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: TextButton(
-        child: Container(
-          child: Text(note.title),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-        ),
-        onPressed: () {
-          print(note.title);
+      child: GestureDetector(
+        onTap: () {
           Navigator.of(context)
               .push(MaterialPageRoute(
                   builder: ((context) => AddNoteScreen(note))))
               .then((value) => widget.noteScreenController.getNotes());
         },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  note.title,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.combine([
+                        TextDecoration.underline,
+                        TextDecoration.overline,
+                      ]),
+                      decorationStyle: TextDecorationStyle.dashed),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  " ",
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                ),
+                Text(
+                  note.description,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
+
+// return Container(
+//       decoration: BoxDecoration(
+//         border: Border.all(width: 5, color: Colors.grey),
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//       child: TextButton(
+//         child: Container(
+//           child: Text(note.title),
+//           width: MediaQuery.of(context).size.width,
+//           height: MediaQuery.of(context).size.height,
+//         ),
+//         onPressed: () {
+//           print(note.title);
+//           Navigator.of(context)
+//               .push(MaterialPageRoute(
+//                   builder: ((context) => AddNoteScreen(note))))
+//               .then((value) => widget.noteScreenController.getNotes());
+//         },
+//       ),
+//     );

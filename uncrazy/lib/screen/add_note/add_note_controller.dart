@@ -72,3 +72,27 @@ Future<Note> viewNote(int id) async {
     return const Note(0, '', '');
   }
 }
+
+Future<bool> deleteNote(int id) async {
+  try {
+    final response = await client
+        .delete(
+          Uri.parse('$noteURL/$id'),
+          headers: await requestHeaders(),
+        )
+        .whenComplete(() => SmartDialog.dismiss());
+
+    print(response.body);
+
+    switch (response.statusCode) {
+      case 200:
+        return true;
+      default:
+        handleError(response.statusCode);
+        return false;
+    }
+  } catch (e) {
+    handleUncaughtError();
+    return false;
+  }
+}
