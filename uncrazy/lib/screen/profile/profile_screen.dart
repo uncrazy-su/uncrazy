@@ -47,8 +47,8 @@ class _ProfileScreen extends State<ProfileScreen> {
     final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
-      _imageFile = File(pickedImage.path);        
-      }); 
+        _imageFile = File(pickedImage.path);
+      });
       return getStringImage(_imageFile) ?? '';
     }
     return '';
@@ -128,27 +128,27 @@ class _ProfileScreen extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(250),
                           border: Border.all(color: Colors.black, width: 5),
                         ),
-                        child:_imageFile != null
-                                ? ClipOval(
-                                    child: Image.file(
-                                      File(_imageFile!.path),
-                                      width: 250,
-                                      height: 250,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ) 
-                                  :widget.user.image != null
-                            ? Container(
-                                width: 200,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            '${widget.user.image}'),
-                                        fit: BoxFit.cover)))
-                            : 
-                                CircleAvatar(
+                        child: _imageFile != null
+                            ? ClipOval(
+                                child: Image.file(
+                                  File(_imageFile!.path),
+                                  width: 250,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : widget.user.image != null
+                                ? Container(
+                                    width: 200,
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                '${widget.user.image}'),
+                                            fit: BoxFit.cover)))
+                                : CircleAvatar(
                                     backgroundImage:
                                         AssetImage("assets/images/logo.png"),
                                   ),

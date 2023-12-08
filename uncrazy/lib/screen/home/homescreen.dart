@@ -53,6 +53,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
   void resetIcon() {
     ref.read(isSearchProvider.notifier).state = false;
     ref.read(searchIndicatorProvider.notifier).state = Colors.white;
+    searchController.clear();
   }
 
   Widget searchField() {
@@ -78,7 +79,6 @@ class _HomeScreen extends ConsumerState<HomeScreen>
             } else {
               homeScreenController.searchNote(searchController.text);
             }
-            searchController.clear();
           },
         ),
         Positioned(
@@ -154,6 +154,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.normal),
+                      overflow: TextOverflow.fade,
                     ),
                   ),
 
@@ -277,6 +278,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                                         .read(sharedDataProvider.notifier)
                                         .setData(0);
                                   }
+                                  searchController.clear();
                                 },
                               ),
                             ),
