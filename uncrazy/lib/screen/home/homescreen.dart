@@ -71,6 +71,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                 if (tabController2.index == 0) {
                   homeScreenController.getTasksByDate(
                       DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                  homeScreenController.getTasksOverdue(DateFormat('yyyy-MM-dd').format(DateTime.now()));
                 } else {
                   homeScreenController.getNotes();
                 }

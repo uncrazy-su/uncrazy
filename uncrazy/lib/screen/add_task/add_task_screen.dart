@@ -38,7 +38,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  int? tagIndex = -1;
+  int tagIndex = -1;
+
   List<String> tagList = <String>[
     "assignment",
     "event",
@@ -57,6 +58,9 @@ class _AddTaskScreen extends State<AddTaskScreen> {
     descController.text = widget.task?.description ?? '';
     dateController.text =
         '${widget.task?.date.toString() ?? ''} ${widget.task?.time.toString() ?? ''}';
+
+    tagIndex = widget.task?.tag ?? -1;
+
     super.initState();
   }
 
@@ -455,8 +459,9 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                           selected: tagIndex == index,
                                           onSelected: (bool selected) {
                                             setState(() {
-                                              tagIndex = selected ? index : null;
-                                            print(tagIndex);
+                                              tagIndex =
+                                                  (selected ? index : null)!;
+                                              print(tagIndex);
                                             });
                                           },
                                         );
@@ -470,7 +475,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                         );
                       },
                       child: Text(
-                        'Add tag',
+                        tagIndex==-1 ? 'Add tag': tagIndex.toString(),
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.white,
@@ -559,8 +564,14 @@ class _AddTaskScreen extends State<AddTaskScreen> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 if (widget.task == null) {
-                  if (await addTask(titleController.text, dateController.text,
-                      timeController.text, descController.text, 0, 0)) {
+                  if (await addTask(
+                      titleController.text,
+                      dateController.text,
+                      timeController.text,
+                      descController.text,
+                      repetitionDay,
+                      0,
+                      0)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }

@@ -25,7 +25,7 @@ mixin _$Note {
   @JsonKey(name: 'title')
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'description')
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +40,7 @@ abstract class $NoteCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'title') String title,
-      @JsonKey(name: 'description') String description});
+      @JsonKey(name: 'description') String? description});
 }
 
 /// @nodoc
@@ -58,7 +58,7 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,10 +69,10 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'title') String title,
-      @JsonKey(name: 'description') String description});
+      @JsonKey(name: 'description') String? description});
 }
 
 /// @nodoc
@@ -102,7 +102,7 @@ class __$$NoteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
   }) {
     return _then(_$NoteImpl(
       null == id
@@ -113,10 +113,10 @@ class __$$NoteImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      null == description
+      freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -140,7 +140,7 @@ class _$NoteImpl implements _Note {
   final String title;
   @override
   @JsonKey(name: 'description')
-  final String description;
+  final String? description;
 
   @override
   String toString() {
@@ -180,7 +180,7 @@ abstract class _Note implements Note {
   const factory _Note(
       @JsonKey(name: 'id') final int id,
       @JsonKey(name: 'title') final String title,
-      @JsonKey(name: 'description') final String description) = _$NoteImpl;
+      @JsonKey(name: 'description') final String? description) = _$NoteImpl;
 
   factory _Note.fromJson(Map<String, dynamic> json) = _$NoteImpl.fromJson;
 
@@ -192,7 +192,7 @@ abstract class _Note implements Note {
   String get title;
   @override
   @JsonKey(name: 'description')
-  String get description;
+  String? get description;
   @override
   @JsonKey(ignore: true)
   _$$NoteImplCopyWith<_$NoteImpl> get copyWith =>
