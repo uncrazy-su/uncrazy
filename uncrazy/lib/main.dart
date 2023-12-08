@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/screen/home/homescreen.dart';
 import 'package:uncrazy/screen/login/login_screen.dart';
+import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/register/register_screen.dart';
 import 'package:uncrazy/screen/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       builder: FlutterSmartDialog.init(),
       theme: ThemeData(
           textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
-      home: Loading(),
+      home: HomeScreen(),
     );
   }
 }

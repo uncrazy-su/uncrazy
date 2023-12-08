@@ -22,6 +22,8 @@ class _AddNoteScreen extends State<AddNoteScreen> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     titleController.text = widget.note?.title ?? '';
@@ -38,104 +40,60 @@ class _AddNoteScreen extends State<AddNoteScreen> {
           extendBodyBehindAppBar: false,
           resizeToAvoidBottomInset: true,
           backgroundColor: const Color(0xFF2B2B2B),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screensize.width * 0.05,
-                  vertical: screensize.width * 0.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      'Note',
-                      style: TextStyle(
+          body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screensize.width * 0.05,
+                    vertical: screensize.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        'Note',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: screensize.height * 0.02),
+                    Container(
+                      width: 120,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Center(
+                          child: Text(
+                            "Title",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: screensize.height * 0.02),
-                  Container(
-                    width: 120,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Center(
-                        child: Text(
-                          "Title",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
                         ),
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: titleController,
-                    validator: (titleValue) {
-                      var passNonNullValue = titleValue ?? "";
-                      if (passNonNullValue.isEmpty) {
-                        return ("Title cannot be empty");
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
-                          borderRadius: BorderRadius.circular(10)),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                  SizedBox(height: screensize.height * 0.02),
-                  Container(
-                    width: 120,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Center(
-                        child: Text(
-                          "Description",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: screensize.width,
-                    height: screensize.height * 0.5,
-                    child: TextFormField(
-                      controller: descController,
-                      expands: true,
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.top,
+                    TextFormField(
+                      controller: titleController,
+                      validator: (titleValue) {
+                        var title = titleValue ?? "";
+                        if (title.isEmpty) {
+                          return ("Title cannot be empty");
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -149,8 +107,56 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                       ),
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
-                  ),
-                ],
+                    SizedBox(height: screensize.height * 0.02),
+                    Container(
+                      width: 120,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Center(
+                          child: Text(
+                            "Description",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: screensize.width,
+                      height: screensize.height * 0.5,
+                      child: TextFormField(
+                        controller: descController,
+                        expands: true,
+                        maxLines: null,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2),
+                              borderRadius: BorderRadius.circular(10)),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -172,13 +178,17 @@ class _AddNoteScreen extends State<AddNoteScreen> {
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              if (widget.note == null) {
-                if (await addNote(titleController.text, descController.text)) {
-                  Navigator.pop(context);
-                }
-              } else {
-                if (await updateNote(widget.note!.id, titleController.text, descController.text)) {
-                  Navigator.pop(context);
+              if (_formKey.currentState!.validate()) {
+                if (widget.note == null) {
+                  if (await addNote(
+                      titleController.text, descController.text)) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  if (await updateNote(widget.note!.id, titleController.text,
+                      descController.text)) {
+                    Navigator.pop(context);
+                  }
                 }
               }
             },

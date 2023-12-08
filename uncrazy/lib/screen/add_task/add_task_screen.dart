@@ -25,6 +25,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   bool isSwitchCollaboration = false;
 
   final dateController = TextEditingController();
+  final timeController = TextEditingController();
   final descController = TextEditingController();
   final titleController = TextEditingController();
 
@@ -34,6 +35,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
 
   DateTime datePlease1 = DateTime.now();
   DateTime timePlease1 = DateTime.now();
+
+  final _formKey = GlobalKey<FormState>();
 
   int? tagIndex = -1;
   List<String> tagList = <String>[
@@ -73,116 +76,131 @@ class _AddTaskScreen extends State<AddTaskScreen> {
           //     color: Colors.white,
           //   ),
           // ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screensize.width * 0.05,
-                  vertical: screensize.width * 0.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Text(
-                      'Task',
-                      style: TextStyle(
+          body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screensize.width * 0.05,
+                    vertical: screensize.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Task',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    SizedBox(height: screensize.height * 0.02),
+
+                    //Title
+                    Container(
+                      width: 120,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Center(
+                          child: Text(
+                            "Title",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  SizedBox(height: screensize.height * 0.02),
-
-                  //Title
-                  Container(
-                    width: 120,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Center(
-                        child: Text(
-                          "Title",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
                         ),
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: titleController,
-                    validator: (titleValue) {
-                      var passNonNullValue = titleValue ?? "";
-                      if (passNonNullValue.isEmpty) {
-                        return ("Title cannot be empty");
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
-                          borderRadius: BorderRadius.circular(10)),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                  SizedBox(height: screensize.height * 0.02),
-
-                  //Date Picker
-                  Container(
-                    width: 120,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Center(
-                        child: Text(
-                          "Date",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  Stack(children: [
-                    TextField(
-                      readOnly: true,
-                      controller: dateController,
+                    TextFormField(
+                      controller: titleController,
+                      validator: (titleValue) {
+                        var title = titleValue ?? "";
+                        if (title.isEmpty) {
+                          return ("Title cannot be empty");
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    SizedBox(height: screensize.height * 0.02),
+
+                    //Date Picker
+                    Container(
+                      width: 120,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Center(
+                          child: Text(
+                            "Date & Time",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2),
-                              borderRadius: BorderRadius.circular(10)),
-                          filled: true,
-                          fillColor: Colors.white,
-                          prefixIcon: IconButton(
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                    Row(children: [
+                      // Date Textformfield
+                      Expanded(
+                        flex: 7,
+                        child: TextFormField(
+                          readOnly: true,
+                          enableInteractiveSelection: false,
+                          controller: dateController,
+                          validator: (dateValue) {
+                            var date = dateValue ?? "";
+                            if (date.toString().length < 2) {
+                              return ("Date cannot be empty");
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            labelText: "",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(10)),
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: IconButton(
                               icon: ImageIcon(
                                 AssetImage("assets/images/icon_calender.png"),
                                 color: Colors.black,
@@ -190,249 +208,277 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                               ),
                               onPressed: () {
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        width: screensize.width,
-                                        child: AlertDialog(
-                                          backgroundColor: Colors.white,
-                                          title: Text("Pick the Date"),
-                                          actions: [
-                                            Container(
-                                              height: 75,
-                                              child: CupertinoDatePicker(
-                                                mode: CupertinoDatePickerMode
-                                                    .date,
-                                                initialDateTime: selectedDate,
-                                                onDateTimeChanged:
-                                                    (DateTime value) {
-                                                  if (value != null &&
-                                                      value != selectedDate)
-                                                    setState(() {
-                                                      datePlease1 = value;
-                                                    });
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                            ),
-                                            SizedBox(
-                                              height: 75,
-                                              child: CupertinoDatePicker(
-                                                initialDateTime: selectedDate,
-                                                mode: CupertinoDatePickerMode
-                                                    .time,
-                                                use24hFormat: true,
-                                                // This is called when the user changes the time.
-                                                onDateTimeChanged: (value) {
-                                                  if (value != null &&
-                                                      value != selectedDate)
-                                                    setState(() {
-                                                      timePlease1 = value;
-                                                    });
-                                                },
-                                              ),
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      width: screensize.width,
+                                      child: AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: Text("Pick the Date"),
+                                        actions: [
+                                          Container(
+                                            height: 75,
+                                            child: CupertinoDatePicker(
+                                              mode:
+                                                  CupertinoDatePickerMode.date,
+                                              initialDateTime: selectedDate,
+                                              onDateTimeChanged:
+                                                  (DateTime value) {
+                                                if (value != null &&
+                                                    value != selectedDate)
                                                   setState(() {
-                                                    dateController
-                                                        .text = DateFormat(
-                                                                'yyyy-MM-dd')
-                                                            .format(
-                                                                datePlease1) +
-                                                        " " +
-                                                        DateFormat.Hm().format(
-                                                            timePlease1);
-                                                    Navigator.pop(context);
+                                                    datePlease1 = value;
                                                   });
-                                                },
-                                                child: const Text("Save"))
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              })),
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                          ),
+                                          SizedBox(
+                                            height: 75,
+                                            child: CupertinoDatePicker(
+                                              initialDateTime: selectedDate,
+                                              mode:
+                                                  CupertinoDatePickerMode.time,
+                                              use24hFormat: true,
+                                              // This is called when the user changes the time.
+                                              onDateTimeChanged: (value) {
+                                                if (value != null &&
+                                                    value != selectedDate)
+                                                  setState(() {
+                                                    timePlease1 = value;
+                                                  });
+                                              },
+                                            ),
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  dateController.text =
+                                                      DateFormat('yyyy-MM-dd')
+                                                          .format(datePlease1);
+                                                  timeController.text =
+                                                      DateFormat.Hm()
+                                                          .format(timePlease1);
+                                                  Navigator.pop(context);
+                                                });
+                                              },
+                                              child: const Text("Save"))
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                        ),
+                      ),
+
+                      //Time Textformfield
+                      Expanded(
+                        flex: 3,
+                        child: TextFormField(
+                          readOnly: true,
+                          enableInteractiveSelection: false,
+                          controller: timeController,
+                          validator: (dateValue) {
+                            var date = dateValue ?? "";
+                            if (date.toString().length < 2) {}
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            labelText: "",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(10)),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                        ),
+                      ),
+                    ]),
+                    SizedBox(height: screensize.height * 0.02),
+
+                    // Description
+                    Container(
+                      width: 120,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Center(
+                          child: Text(
+                            "Description",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: descController,
+                      maxLines: 3,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
-                    // Positioned(
-                    //   top: 5,
-                    //   left: 0,
-                    //   child:,
-                    // ),
-                  ]),
-                  SizedBox(height: screensize.height * 0.02),
+                    SizedBox(height: screensize.height * 0.02),
 
-                  // Description
-                  Container(
-                    width: 120,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Center(
-                        child: Text(
-                          "Description",
+                    //Repetition
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Repetition",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: descController,
-                    maxLines: 3,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
-                          borderRadius: BorderRadius.circular(10)),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                  SizedBox(height: screensize.height * 0.02),
-
-                  //Repetition
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Repetition",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                        Switch(
+                          value: isSwitchRepetition,
+                          onChanged: toggleRepetitionSwitch,
+                          activeTrackColor: Colors.orange,
+                          activeColor: Colors.deepOrange,
                         ),
-                      ),
-                      Switch(
-                        value: isSwitchRepetition,
-                        onChanged: toggleRepetitionSwitch,
-                        activeTrackColor: Colors.orange,
-                        activeColor: Colors.deepOrange,
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: isSwitchRepetition,
-                    child: RepetitionWidget(),
-                  ),
-
-                  //Reminder
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Reminder",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Switch(
-                        value: isSwitchReminder,
-                        onChanged: toggleReminderSwitch,
-                        activeTrackColor: Colors.orange,
-                        activeColor: Colors.deepOrange,
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: isSwitchReminder,
-                    child: Container(
-                        height: screensize.width * 0.85,
-                        child: ReminderWidget()),
-                  ),
-
-                  //Collaboration
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Collaboration",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Switch(
-                        value: isSwitchCollaboration,
-                        onChanged: toggleCollaborationSwitch,
-                        activeTrackColor: Colors.orange,
-                        activeColor: Colors.deepOrange,
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: isSwitchCollaboration,
-                    child: Container(
-                        height: screensize.width * 0.3,
-                        child: CollaborationWidget()),
-                  ),
-
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      backgroundColor: Colors.blue,
-                      side: BorderSide(color: Colors.white, width: 1),
+                      ],
                     ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => StatefulBuilder(
-                          builder:
-                              (BuildContext context, StateSetter setState) {
-                            return AlertDialog(
-                              backgroundColor: Colors.grey,
-                              actions: <Widget>[
-                                Wrap(
-                                  children: List.generate(
-                                    tagList.length,
-                                    (int index) {
-                                      return ChoiceChip(
-                                        label: Text(tagList[index]),
-                                        selectedColor: Colors.blue,
-                                        selected: tagIndex == index,
-                                        onSelected: (bool selected) {
-                                          setState(() {
-                                            tagIndex = selected ? index : null;
+                    Visibility(
+                      visible: isSwitchRepetition,
+                      child: RepetitionWidget(),
+                    ),
+
+                    //Reminder
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Reminder",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Switch(
+                          value: isSwitchReminder,
+                          onChanged: toggleReminderSwitch,
+                          activeTrackColor: Colors.orange,
+                          activeColor: Colors.deepOrange,
+                        ),
+                      ],
+                    ),
+                    Visibility(
+                      visible: isSwitchReminder,
+                      child: Container(
+                          height: screensize.width * 0.85,
+                          child: ReminderWidget()),
+                    ),
+
+                    //Collaboration
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Collaboration",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Switch(
+                          value: isSwitchCollaboration,
+                          onChanged: toggleCollaborationSwitch,
+                          activeTrackColor: Colors.orange,
+                          activeColor: Colors.deepOrange,
+                        ),
+                      ],
+                    ),
+                    Visibility(
+                      visible: isSwitchCollaboration,
+                      child: Container(
+                          height: screensize.width * 0.3,
+                          child: CollaborationWidget()),
+                    ),
+
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        backgroundColor: Colors.blue,
+                        side: BorderSide(color: Colors.white, width: 1),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSetter setState) {
+                              return AlertDialog(
+                                backgroundColor: Colors.grey,
+                                actions: <Widget>[
+                                  Wrap(
+                                    children: List.generate(
+                                      tagList.length,
+                                      (int index) {
+                                        return ChoiceChip(
+                                          label: Text(tagList[index]),
+                                          selectedColor: Colors.blue,
+                                          selected: tagIndex == index,
+                                          onSelected: (bool selected) {
+                                            setState(() {
+                                              tagIndex = selected ? index : null;
                                             print(tagIndex);
-                                          });
-                                        },
-                                      );
-                                    },
-                                  ).toList(),
-                                )
-                              ],
-                            );
-                          },
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ).toList(),
+                                  )
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Add tag',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
-                      );
-                    },
-                    child: Text(
-                      'Add tag',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -511,29 +557,25 @@ class _AddTaskScreen extends State<AddTaskScreen> {
               side: BorderSide(color: Colors.white, width: 1),
             ),
             onPressed: () async {
-              if (widget.task == null) {
-                if (await addTask(
-                    titleController.text,
-                    dateController.text.split(' ').first,
-                    dateController.text.split(' ').last,
-                    descController.text,
-                    repetitionDay,
-                    0,
-                    tagIndex ?? -1)) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
-                }
-              } else {
-                if (await updateTask(
-                    widget.task?.id ?? 0,
-                    titleController.text,
-                    dateController.text.split(' ').first,
-                    dateController.text.split(' ').last,
-                    descController.text,
-                    0,
-                    tagIndex ?? -1)) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
+              if (_formKey.currentState!.validate()) {
+                if (widget.task == null) {
+                  if (await addTask(titleController.text, dateController.text,
+                      timeController.text, descController.text, 0, 0)) {
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  }
+                } else {
+                  if (await updateTask(
+                      widget.task?.id ?? 0,
+                      titleController.text,
+                      dateController.text,
+                      timeController.text,
+                      descController.text,
+                      0,
+                      0)) {
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  }
                 }
               }
             },
