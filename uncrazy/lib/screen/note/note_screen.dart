@@ -111,7 +111,7 @@ class _NoteScreen extends ConsumerState<NoteScreen> {
                   ),
                 ),
                 Text(
-                  note.description,
+                  note.description ?? '',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
