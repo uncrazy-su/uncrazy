@@ -247,9 +247,11 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          if (await updateUser(
-                                              1, nameController.text)) {
-                                            Navigator.pop(context, 'Change');
+                                          if (nameController.text.isNotEmpty) {
+                                            if (await updateUser(
+                                                1, nameController.text)) {
+                                              Navigator.pop(context, 'Change');
+                                            }
                                           }
                                         },
                                         child: const Text('Change'),
@@ -272,6 +274,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                             // initialValue: "email@mail.com",
                             readOnly: true,
                             controller: emailPhoneController,
+                            validator: (emailPhoneController) {
+                              var nonNullValue = emailPhoneController ?? '';
+                              if (nonNullValue.isEmpty) {
+                                return ("Email/Phone Number is required");
+                              }
+                              if (!emailPattern.hasMatch(nonNullValue) &&
+                                  !phonePatttern.hasMatch(nonNullValue)) {
+                                return ("Please enter valid email/phone number");
+                              }
+                              return null;
+                            },
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -311,20 +324,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     //content = TextFormField to change the username
                                     content: TextFormField(
                                       controller: emailPhoneController,
-                                      validator: (emailPhoneController) {
-                                        var nonNullValue =
-                                            emailPhoneController ?? '';
-                                        if (nonNullValue.isEmpty) {
-                                          return ("Email/Phone Number is required");
-                                        }
-                                        if (!emailPattern
-                                                .hasMatch(nonNullValue) &&
-                                            !phonePatttern
-                                                .hasMatch(nonNullValue)) {
-                                          return ("Please enter valid email/phone number");
-                                        }
-                                        return null;
-                                      },
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -355,14 +354,20 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       TextButton(
                                         onPressed: () async {
                                           if (widget.user.phone_no != null) {
-                                            if (await updateUser(
-                                                2, emailPhoneController.text)) {
-                                              Navigator.pop(context);
+                                            if (phonePatttern.hasMatch(
+                                                emailPhoneController.text)) {
+                                              if (await updateUser(2,
+                                                  emailPhoneController.text)) {
+                                                Navigator.pop(context);
+                                              }
                                             }
                                           } else {
-                                            if (await updateUser(
-                                                3, emailPhoneController.text)) {
-                                              Navigator.pop(context);
+                                            if (emailPattern.hasMatch(
+                                                emailPhoneController.text)) {
+                                              if (await updateUser(2,
+                                                  emailPhoneController.text)) {
+                                                Navigator.pop(context);
+                                              }
                                             }
                                           }
                                         },
