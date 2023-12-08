@@ -24,8 +24,29 @@ class TaskController extends Controller
         );
     }
 
-    public function index(Request $request){
+    public function index(){
         $tasks = auth()->user()->tasks;
+        return response(
+            $tasks, 200
+        );
+    }
+
+    public function indexByDate(Request $request){
+        $tasks = auth()->user()->tasks->where('date', '=', $request['date'])->sortBy('time')->sortBy('status')->values();
+        return response(
+            $tasks, 200
+        );
+    }
+
+    public function indexOverdue(Request $request){
+        $tasks = auth()->user()->tasks->where('date', '<', $request['date'])->sortBy('time')->sortBy('status')->values();
+        return response(
+            $tasks, 200
+        );
+    }
+
+    public function indexByTag(Request $request){
+        $tasks = auth()->user()->tasks->where('date', '=', $request['date'])->where('tag','=', $request['tag'])->sortBy('time')->sortBy('status')->values();
         return response(
             $tasks, 200
         );
@@ -51,6 +72,7 @@ class TaskController extends Controller
                 'description'=> $request['description'],
                 'date'=> $request['date'],
                 'time'=> $request['time'],
+                'repetition'=> $request['repetition'],
                 'reminder'=> $request['reminder'],
                 'tag'=> $request['tag']
             ]);

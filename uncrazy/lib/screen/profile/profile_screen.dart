@@ -61,6 +61,13 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   @override
+  void initState() {
+    nameController.text = widget.user.name;
+    emailPhoneController.text = widget.user.email ?? widget.user.phone_no ?? '';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screensize = MediaQuery.of(context).size;
 
@@ -141,7 +148,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       Stack(
                         children: <Widget>[
                           TextFormField(
-                            controller: nameController..text = widget.user.name,
+                            controller: nameController,
                             readOnly: true,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -167,6 +174,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               ),
                               onPressed: () {
                                 showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     backgroundColor: Colors.black,
@@ -180,8 +188,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                     ),
                                     //content = TextFormField to change the username
                                     content: TextFormField(
-                                      controller: nameController
-                                        ..text = widget.user.name,
+                                      controller: nameController,
                                       decoration: const InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide:
@@ -199,6 +206,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                                         onPressed: () {
                                           //setState(() {
                                           nameString = nameController.text;
+                                          nameController
+                                            .text = widget.user.name;
                                           Navigator.pop(context);
                                           //});
                                         },
@@ -230,10 +239,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           TextFormField(
                             // initialValue: "email@mail.com",
                             readOnly: true,
-                            controller: emailPhoneController
-                              ..text = widget.user.email ??
-                                  widget.user.phone_no ??
-                                  '',
+                            controller: emailPhoneController,
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -258,6 +264,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               ),
                               onPressed: () {
                                 showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     backgroundColor: Colors.black,
@@ -304,6 +311,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                           //setState(() {
                                           emailPhoneString =
                                               emailPhoneController.text;
+                                              emailPhoneController.text = widget.user.email ?? widget.user.phone_no ?? '';
                                           Navigator.pop(context);
                                           //});
                                         },
@@ -311,8 +319,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          if (emailPhoneController.text
-                                              .startsWith('0')) {
+                                          if (widget.user.phone_no != null) {
                                             if (await updateUser(
                                                 2, emailPhoneController.text)) {
                                               Navigator.pop(context);
@@ -369,6 +376,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               ),
                               onPressed: () {
                                 showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     backgroundColor: Colors.black,

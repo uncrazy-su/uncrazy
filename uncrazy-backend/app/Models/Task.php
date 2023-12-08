@@ -15,6 +15,7 @@ class Task extends Model
         'date',
         'time',
         'description',
+        'repetition',
         'reminder',
         'tag',
         'status'
