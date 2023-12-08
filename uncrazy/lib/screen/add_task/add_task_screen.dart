@@ -57,7 +57,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
     titleController.text = widget.task?.title ?? '';
     descController.text = widget.task?.description ?? '';
     dateController.text =
-        '${widget.task?.date.toString() ?? ''} ${widget.task?.time.toString() ?? ''}';
+        widget.task?.date.toString()??'';
+    timeController.text= widget.task?.time.toString()??'';
 
     tagIndex = widget.task?.tag ?? -1;
 
