@@ -53,6 +53,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
   void resetIcon() {
     ref.read(isSearchProvider.notifier).state = false;
     ref.read(searchIndicatorProvider.notifier).state = Colors.white;
+    searchController.clear();
   }
 
   Widget searchField() {
@@ -74,11 +75,10 @@ class _HomeScreen extends ConsumerState<HomeScreen>
           style: const TextStyle(color: Colors.black, fontSize: 18),
           onEditingComplete: () {
             if (tabController2.index == 0) {
-                  homeScreenController.searchTask(searchController
-                      .text);
-                } else {
-                  homeScreenController.searchNote(searchController.text);
-                }
+              homeScreenController.searchTask(searchController.text);
+            } else {
+              homeScreenController.searchNote(searchController.text);
+            }
           },
         ),
         Positioned(
@@ -92,8 +92,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
               ),
               onPressed: () {
                 if (tabController2.index == 0) {
-                  homeScreenController.searchTask(searchController
-                      .text);
+                  homeScreenController.searchTask(searchController.text);
                 } else {
                   homeScreenController.searchNote(searchController.text);
                 }
@@ -154,6 +153,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.normal),
+                      overflow: TextOverflow.fade,
                     ),
                   ),
 
@@ -167,10 +167,11 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                           color: Colors.blue,
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: NetworkImage(model.user.image??'assets/images/logo.png'),
-                            fit: BoxFit.cover
+                              image: NetworkImage(
+                                  model.user.image ?? 'assets/images/logo.png'),
+                              fit: BoxFit.cover
 //                            AssetImage('')
-                            ),
+                              ),
                         ),
                       ),
                       onPressed: () {
@@ -270,6 +271,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                                         .read(searchIndicatorProvider.notifier)
                                         .state = Colors.white;
                                   }
+                                  searchController.clear();
                                 },
                               ),
                             ),
