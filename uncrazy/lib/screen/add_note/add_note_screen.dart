@@ -12,7 +12,7 @@ import 'package:uncrazy/data/note/note.dart';
 class AddNoteScreen extends StatefulWidget {
   Note? note;
   // ignore: use_key_in_widget_constructors
-  AddNoteScreen([note]);
+  AddNoteScreen([this.note]);
 
   @override
   State<AddNoteScreen> createState() => _AddNoteScreen();

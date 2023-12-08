@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uncrazy/screen/home/home_screen_controller.dart';
 import 'package:uncrazy/screen/home/home_screen_model.dart';
@@ -9,52 +10,75 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/widget/search_widget.dart';
 
 // ignore: must_be_immutable
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
+  int? initialIndex;
+  // ignore: use_key_in_widget_constructors
+  HomeScreen([this.initialIndex]);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreen();
+}
+
+class _HomeScreen extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final refresher = RefreshController(initialRefresh: true);
   final StateProvider<bool> isSearchProvider = StateProvider((ref) => false);
   final StateProvider<Color> searchIndicatorProvider =
       StateProvider((ref) => Colors.white);
   final StateProvider<int> indexProvider = StateProvider((ref) => 0);
+
   late HomeScreenController homeScreenController;
   late HomeScreenModel model;
 
-  HomeScreen({super.key});
+  int tabIndex = 0;
+  late TabController tabController2;
 
   @override
-  Widget build(BuildContext context, ref) {
+  void initState() {
+    super.initState();
+    tabController2 = TabController(length: 2, vsync: this);
+    tabController2.addListener(() {
+      setState(() {
+        tabIndex = tabController2.index;
+        print(tabIndex);
+        resetIcon();
+      });
+    });
+  }
+
+  void resetIcon() {
+    ref.read(isSearchProvider.notifier).state = false;
+    ref.read(searchIndicatorProvider.notifier).state = Colors.white;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     homeScreenController = ref.watch(homeScreenVMProvider.notifier);
     model = ref.watch(homeScreenVMProvider);
     Size screensize = MediaQuery.of(context).size;
     final isSearch = ref.watch(isSearchProvider);
     final searchIndicator = ref.watch(searchIndicatorProvider);
 
-    void resetIcon() {
-      ref.read(isSearchProvider.notifier).state = false;
-      ref.read(searchIndicatorProvider.notifier).state = Colors.white;
-    }
-
     return SafeArea(
-      child: DefaultTabController(
-          length: 2,
-          child: Builder(builder: (BuildContext context) {
-            final TabController tabController =
-                DefaultTabController.of(context)!;
-            tabController.addListener(() {
-              if (!tabController.indexIsChanging) {
-                // Do something when tab is changing
-                resetIcon();
-              }
-            });
-            return SmartRefresher(
+        child: DefaultTabController(
+            initialIndex: 1,
+            length: 2,
+            child: SmartRefresher(
               controller: refresher,
               onRefresh: () {
                 refresher.headerMode?.value = RefreshStatus.idle;
                 homeScreenController.getProfile();
+                if (tabController2.index == 0) {
+                  homeScreenController.getTasksByDate(
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                } else {
+                  homeScreenController.getNotes();
+                }
                 refresher.loadComplete();
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
-                backgroundColor: Color(0xFF2B2B2B),
+                backgroundColor: const Color(0xFF2B2B2B),
 
                 //Appbar for the tabbar, welcome message, and profile picture
                 appBar: AppBar(
@@ -93,8 +117,11 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => ProfileScreen(model.user))));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: ((context) =>
+                                    ProfileScreen(model.user))))
+                            .then((value) => homeScreenController.getProfile());
                       },
                     ),
                   ],
@@ -126,6 +153,7 @@ class HomeScreen extends ConsumerWidget {
                                 color: Color.fromARGB(255, 5, 54, 141),
                               ),
                               child: TabBar(
+                                controller: tabController2,
                                 indicatorColor: Colors.black,
                                 indicator: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
@@ -134,7 +162,7 @@ class HomeScreen extends ConsumerWidget {
                                 labelColor: Colors.white,
                                 unselectedLabelColor: Colors.black,
                                 onTap: (index) {
-                                  resetIcon();
+                                  //resetIcon(tabController2.index);
                                 },
                                 tabs: [
                                   Container(
@@ -203,17 +231,18 @@ class HomeScreen extends ConsumerWidget {
                     Expanded(
                       flex: 9,
                       child: TabBarView(
+                        controller: tabController2,
                         children: [
-                          TaskScreen(),
-                          NoteScreen(),
+                          TaskScreen(
+                              taskScreenController: homeScreenController),
+                          NoteScreen(
+                              noteScreenController: homeScreenController),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-            );
-          })),
-    );
+            )));
   }
 }

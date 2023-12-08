@@ -6,22 +6,42 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uncrazy/data/user/user.dart';
 
+  // Future<void> getProfile() async {
+  //   try {
+  //     final response = await client
+  //         .get(Uri.parse(userURL), headers: await requestHeaders())
+  //         .whenComplete(() => SmartDialog.dismiss());
+  //     switch (response.statusCode) {
+  //       case 200:
+  //         print(response.body);
+  //         User user = User.fromJson(jsonDecode(response.body));
+  //         state = state.copyWith(user: user);
+  //         break;
+  //       default:
+  //         handleError(response.statusCode);
+  //         break;
+  //     }
+  //   } catch (e) {
+  //     handleUncaughtError();
+  //   }
+  // }
+
+
 Future<bool> updateUser(int paramType, String updatedParam) async {
   try {
     final response = await client
         .put(
           Uri.parse(userURL),
           headers: await requestHeaders(),
-           body: //paramType == 1?
+           body: paramType == 1?
                json.encode({'name': updatedParam})
-          // : paramType == 2
-          //     ? json.encode({'phone_no': updatedParam})
-          //     : paramType == 3
-          //         ? json.encode({'email': updatedParam})
-          //         : json.encode({'password': updatedParam}
-        )
+          : paramType == 2
+              ? json.encode({'phone_no': updatedParam})
+              : paramType == 3
+                  ? json.encode({'email': updatedParam})
+                  : json.encode({'password': updatedParam}
+        ))
         .whenComplete(() => SmartDialog.dismiss());
-    SmartDialog.showToast(response.body);
     switch (response.statusCode) {
       case 200:
         return true;

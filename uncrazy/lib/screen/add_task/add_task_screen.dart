@@ -6,6 +6,7 @@ import 'package:uncrazy/screen/add_task/add_task_controller.dart';
 import 'package:uncrazy/widget/collaboration_widget.dart';
 import 'package:uncrazy/widget/reminder_widget.dart';
 import 'package:uncrazy/widget/repetition_widget.dart';
+import 'package:day_picker/day_picker.dart';
 
 // ignore: must_be_immutable
 class AddTaskScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  int? _value = 1;
+  int? tagIndex = -1;
   List<String> tagList = <String>[
     "assignment",
     "event",
@@ -47,6 +48,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
     "work",
     "fun"
   ];
+
+  List<int> repetitionDay = [];
 
   @override
   void initState() {
@@ -449,10 +452,11 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                         return ChoiceChip(
                                           label: Text(tagList[index]),
                                           selectedColor: Colors.blue,
-                                          selected: _value == index,
+                                          selected: tagIndex == index,
                                           onSelected: (bool selected) {
                                             setState(() {
-                                              _value = selected ? index : null;
+                                              tagIndex = selected ? index : null;
+                                            print(tagIndex);
                                             });
                                           },
                                         );
@@ -503,7 +507,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       builder: (context) => AlertDialog(
                         backgroundColor: Colors.black,
                         //title
-                        title: Text(
+                        title: const Text(
                           "Are you sure to delete?",
                           style: TextStyle(
                             color: Colors.white,
@@ -519,10 +523,12 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               int count = 0;
-                              Navigator.of(context)
-                                  .popUntil((_) => count++ >= 2);
+                              if (await deleteTask(widget.task?.id ?? 0)) {
+                                Navigator.of(context)
+                                    .popUntil((_) => count++ >= 2);
+                              }
                             },
                             child: const Text(
                               'Delete',
@@ -596,6 +602,49 @@ class _AddTaskScreen extends State<AddTaskScreen> {
         isSwitchRepetition = false;
       });
     }
+  }
+
+  //Value for switch
+  // bool isSwitchRepetition = false;
+  // bool isSwitchReminder = false;
+  // bool isSwitchCollaboration = false;
+
+  Widget RepetitionWidget() {
+    Size screensize = MediaQuery.of(context).size;
+    final customWidgetKey = new GlobalKey<SelectWeekDaysState>();
+
+    List<DayInWeek> _days = [
+      DayInWeek("Mon", dayKey: "0"),
+      DayInWeek("Tue", dayKey: "1"),
+      DayInWeek("Wed", dayKey: "2"),
+      DayInWeek("Thu", dayKey: "3"),
+      DayInWeek("Fri", dayKey: "4"),
+      DayInWeek("Sat", dayKey: "5"),
+      DayInWeek("Sun", dayKey: "6"),
+    ];
+
+    return Container(
+      width: screensize.width,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: 5,
+        ),
+        child: SelectWeekDays(
+          fontSize: 14,
+          backgroundColor: Colors.transparent,
+          padding: 0.0,
+          days: _days,
+          onSelect: (values) {
+            List<int> tmp = [];
+            (values as List).forEach((element) {
+              tmp.add(int.parse(element));
+            });
+            repetitionDay = tmp;
+            print(repetitionDay);
+          },
+        ),
+      ),
+    );
   }
 
   void toggleReminderSwitch(bool value) {

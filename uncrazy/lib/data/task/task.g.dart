@@ -11,7 +11,7 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       json['title'] as String,
       json['date'] as String,
       json['time'] as String,
-      json['description'] as String,
+      json['description'] as String?,
       json['reminder'] as int,
       json['tag'] as int,
       json['status'] as int,

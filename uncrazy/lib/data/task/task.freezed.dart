@@ -29,7 +29,8 @@ mixin _$Task {
   @JsonKey(name: 'time')
   String get time => throw _privateConstructorUsedError;
   @JsonKey(name: 'description')
-  String get description => throw _privateConstructorUsedError;
+  String? get description =>
+      throw _privateConstructorUsedError; //@JsonKey(name: 'repetition') String repetition,
   @JsonKey(name: 'reminder')
   int get reminder => throw _privateConstructorUsedError;
   @JsonKey(name: 'tag')
@@ -52,7 +53,7 @@ abstract class $TaskCopyWith<$Res> {
       @JsonKey(name: 'title') String title,
       @JsonKey(name: 'date') String date,
       @JsonKey(name: 'time') String time,
-      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'reminder') int reminder,
       @JsonKey(name: 'tag') int tag,
       @JsonKey(name: 'status') int status});
@@ -75,7 +76,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? title = null,
     Object? date = null,
     Object? time = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? reminder = null,
     Object? tag = null,
     Object? status = null,
@@ -97,10 +98,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       reminder: null == reminder
           ? _value.reminder
           : reminder // ignore: cast_nullable_to_non_nullable
@@ -129,7 +130,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       @JsonKey(name: 'title') String title,
       @JsonKey(name: 'date') String date,
       @JsonKey(name: 'time') String time,
-      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'reminder') int reminder,
       @JsonKey(name: 'tag') int tag,
       @JsonKey(name: 'status') int status});
@@ -149,7 +150,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? title = null,
     Object? date = null,
     Object? time = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? reminder = null,
     Object? tag = null,
     Object? status = null,
@@ -171,10 +172,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
               as String,
-      null == description
+      freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       null == reminder
           ? _value.reminder
           : reminder // ignore: cast_nullable_to_non_nullable
@@ -221,7 +222,8 @@ class _$TaskImpl implements _Task {
   final String time;
   @override
   @JsonKey(name: 'description')
-  final String description;
+  final String? description;
+//@JsonKey(name: 'repetition') String repetition,
   @override
   @JsonKey(name: 'reminder')
   final int reminder;
@@ -279,7 +281,7 @@ abstract class _Task implements Task {
       @JsonKey(name: 'title') final String title,
       @JsonKey(name: 'date') final String date,
       @JsonKey(name: 'time') final String time,
-      @JsonKey(name: 'description') final String description,
+      @JsonKey(name: 'description') final String? description,
       @JsonKey(name: 'reminder') final int reminder,
       @JsonKey(name: 'tag') final int tag,
       @JsonKey(name: 'status') final int status) = _$TaskImpl;
@@ -300,8 +302,8 @@ abstract class _Task implements Task {
   String get time;
   @override
   @JsonKey(name: 'description')
-  String get description;
-  @override
+  String? get description;
+  @override //@JsonKey(name: 'repetition') String repetition,
   @JsonKey(name: 'reminder')
   int get reminder;
   @override

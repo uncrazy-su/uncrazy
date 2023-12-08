@@ -1,11 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:http/http.dart' as http;
+import 'package:uncrazy/widget/loading.dart';
 
 final _client = http.Client();
 
 http.Client get client {
-  SmartDialog.showLoading();
+  SmartDialog.showLoading(
+//    animationType: SmartAnimationType.scale,
+    builder: (context) => CustomCircularProgressIndicator(),
+    maskColor: Color.fromARGB(153, 0, 0, 0)
+  );
   return _client;
 }
 

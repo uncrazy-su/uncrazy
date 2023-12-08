@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->time('time');
             $table->string('description')->nullable();
+            $table->string('repetition')->nullable();
             $table->integer('reminder')->nullable();
             $table->integer('tag')->nullable();
             $table->integer('status');
