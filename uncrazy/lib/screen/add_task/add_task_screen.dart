@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/screen/add_task/add_task_controller.dart';
-import 'package:uncrazy/widget/collaboration_widget.dart';
-import 'package:uncrazy/widget/reminder_widget.dart';
-import 'package:uncrazy/widget/repetition_widget.dart';
-import 'package:day_picker/day_picker.dart';
+
+//This class is for list of tasks management
 
 // ignore: must_be_immutable
 class AddTaskScreen extends StatefulWidget {
@@ -56,9 +54,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
   void initState() {
     titleController.text = widget.task?.title ?? '';
     descController.text = widget.task?.description ?? '';
-    dateController.text =
-        widget.task?.date.toString()??'';
-    timeController.text= widget.task?.time.toString()??'';
+    dateController.text = widget.task?.date.toString() ?? '';
+    timeController.text = widget.task?.time.toString() ?? '';
 
     tagIndex = widget.task?.tag ?? -1;
 
@@ -73,14 +70,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
       child: Scaffold(
           extendBodyBehindAppBar: false,
           resizeToAvoidBottomInset: true,
-          backgroundColor: Color(0xFF2B2B2B),
-          // appBar: AppBar(
-          //   backgroundColor: Colors.transparent,
-          //   elevation: 0,
-          //   leading: const BackButton(
-          //     color: Colors.white,
-          //   ),
-          // ),
+          backgroundColor: const Color(0xFF2B2B2B),
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -356,83 +346,6 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     SizedBox(height: screensize.height * 0.02),
-
-                    //Repetition
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "Repetition",
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 18,
-                    //       ),
-                    //     ),
-                    //     Switch(
-                    //       value: isSwitchRepetition,
-                    //       onChanged: toggleRepetitionSwitch,
-                    //       activeTrackColor: Colors.orange,
-                    //       activeColor: Colors.deepOrange,
-                    //     ),
-                    //   ],
-                    // ),
-                    // Visibility(
-                    //   visible: isSwitchRepetition,
-                    //   child: RepetitionWidget(),
-                    // ),
-
-                    //Reminder
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "Reminder",
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 18,
-                    //       ),
-                    //     ),
-                    //     Switch(
-                    //       value: isSwitchReminder,
-                    //       onChanged: toggleReminderSwitch,
-                    //       activeTrackColor: Colors.orange,
-                    //       activeColor: Colors.deepOrange,
-                    //     ),
-                    //   ],
-                    // ),
-                    // Visibility(
-                    //   visible: isSwitchReminder,
-                    //   child: Container(
-                    //       height: screensize.width * 0.85,
-                    //       child: ReminderWidget()),
-                    // ),
-
-                    //Collaboration
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       "Collaboration",
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 18,
-                    //       ),
-                    //     ),
-                    //     Switch(
-                    //       value: isSwitchCollaboration,
-                    //       onChanged: toggleCollaborationSwitch,
-                    //       activeTrackColor: Colors.orange,
-                    //       activeColor: Colors.deepOrange,
-                    //     ),
-                    //   ],
-                    // ),
-                    // Visibility(
-                    //   visible: isSwitchCollaboration,
-                    //   child: Container(
-                    //       height: screensize.width * 0.3,
-                    //       child: CollaborationWidget()),
-                    // ),
-
                     TextButton(
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -567,13 +480,8 @@ class _AddTaskScreen extends State<AddTaskScreen> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 if (widget.task == null) {
-                  if (await addTask(
-                      titleController.text,
-                      dateController.text,
-                      timeController.text,
-                      descController.text,
-                      0,
-                      tagIndex)) {
+                  if (await addTask(titleController.text, dateController.text,
+                      timeController.text, descController.text, 0, tagIndex)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
@@ -603,84 +511,5 @@ class _AddTaskScreen extends State<AddTaskScreen> {
         ],
       ),
     );
-  }
-
-  void toggleRepetitionSwitch(bool value) {
-    if (isSwitchRepetition == false) {
-      setState(() {
-        isSwitchRepetition = true;
-      });
-    } else {
-      setState(() {
-        isSwitchRepetition = false;
-      });
-    }
-  }
-
-  //Value for switch
-  // bool isSwitchRepetition = false;
-  // bool isSwitchReminder = false;
-  // bool isSwitchCollaboration = false;
-
-  Widget RepetitionWidget() {
-    Size screensize = MediaQuery.of(context).size;
-    final customWidgetKey = new GlobalKey<SelectWeekDaysState>();
-
-    List<DayInWeek> _days = [
-      DayInWeek("Mon", dayKey: "0"),
-      DayInWeek("Tue", dayKey: "1"),
-      DayInWeek("Wed", dayKey: "2"),
-      DayInWeek("Thu", dayKey: "3"),
-      DayInWeek("Fri", dayKey: "4"),
-      DayInWeek("Sat", dayKey: "5"),
-      DayInWeek("Sun", dayKey: "6"),
-    ];
-
-    return Container(
-      width: screensize.width,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 5,
-        ),
-        child: SelectWeekDays(
-          fontSize: 14,
-          backgroundColor: Colors.transparent,
-          padding: 0.0,
-          days: _days,
-          onSelect: (values) {
-            List<int> tmp = [];
-            (values as List).forEach((element) {
-              tmp.add(int.parse(element));
-            });
-            repetitionDay = tmp;
-            print(repetitionDay);
-          },
-        ),
-      ),
-    );
-  }
-
-  void toggleReminderSwitch(bool value) {
-    if (isSwitchReminder == false) {
-      setState(() {
-        isSwitchReminder = true;
-      });
-    } else {
-      setState(() {
-        isSwitchReminder = false;
-      });
-    }
-  }
-
-  void toggleCollaborationSwitch(bool value) {
-    if (isSwitchCollaboration == false) {
-      setState(() {
-        isSwitchCollaboration = true;
-      });
-    } else {
-      setState(() {
-        isSwitchCollaboration = false;
-      });
-    }
   }
 }

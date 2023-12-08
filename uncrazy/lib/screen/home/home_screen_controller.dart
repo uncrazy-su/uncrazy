@@ -9,6 +9,8 @@ import 'package:uncrazy/data/task/task.dart';
 import 'package:uncrazy/data/user/user.dart';
 import 'package:uncrazy/screen/home/home_screen_model.dart';
 
+//This class serves for homeScreenController
+
 final homeScreenVMProvider =
     StateNotifierProvider<HomeScreenController, HomeScreenModel>(
         (ref) => HomeScreenController());
@@ -23,7 +25,6 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
           .whenComplete(() => SmartDialog.dismiss());
       switch (response.statusCode) {
         case 200:
-          print(response.body);
           User user = User.fromJson(jsonDecode(response.body));
           state = state.copyWith(user: user);
           break;
@@ -44,7 +45,6 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
             headers: await requestHeaders(),
           )
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           //print(response.body);
@@ -69,7 +69,6 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
               body: json.encode({
                 'date': date}))
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           //print(response.body);
@@ -96,7 +95,6 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
               headers: await requestHeaders(),
               body: json.encode({'date': date}))
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           //print(response.body);
@@ -123,8 +121,6 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
               headers: await requestHeaders(),
               body: json.encode({'status': status}))
           .whenComplete(() => SmartDialog.dismiss());
-
-      print(response.body);
 
       switch (response.statusCode) {
         case 200:
@@ -168,7 +164,6 @@ Future<bool> deleteDoneTask() async {
               headers: await requestHeaders(),
               body: json.encode({'title': title}))
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           //print(response.body);
@@ -191,7 +186,6 @@ Future<bool> deleteDoneTask() async {
               headers: await requestHeaders(),
               body: json.encode({'title': title}))
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           //print(response.body);
@@ -206,15 +200,6 @@ Future<bool> deleteDoneTask() async {
       handleUncaughtError();
     }    
   }
-
-  // void search(String key) {
-  //   key = key.toLowerCase();
-  //   List<Task> tmp = state.tasks.where((element) {
-  //     var title = element.title.toLowerCase();
-  //     return title.contains(key);
-  //   }).toList();
-  //   state = state.copyWith(tasks: tmp);
-  // }
 
   void filterByTag(int key) {
     if (key != 0) {

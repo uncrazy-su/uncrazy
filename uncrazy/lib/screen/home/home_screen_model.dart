@@ -5,6 +5,7 @@ import 'package:uncrazy/data/user/user.dart';
 part 'home_screen_model.freezed.dart';
 part 'home_screen_model.g.dart';
 
+//This class serves for homeScreenModel
 @freezed
 class HomeScreenModel with _$HomeScreenModel{
   const factory HomeScreenModel({
@@ -12,7 +13,7 @@ class HomeScreenModel with _$HomeScreenModel{
         @Default([]) List<Note> notes,
         @Default([]) List<Task> tasks,
         @Default([]) List<Task> tasksOverdue,
-        
+
     })= _HomeScreenModel;
 
   factory HomeScreenModel.fromJson(Map<String,Object?>json)=>_$HomeScreenModelFromJson(json);

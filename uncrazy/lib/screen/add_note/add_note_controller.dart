@@ -4,6 +4,8 @@ import 'package:uncrazy/data/api_response.dart';
 import 'package:uncrazy/data/constant.dart';
 import 'package:uncrazy/data/note/note.dart';
 
+//This class serves for single note management 
+
 Future<bool> addNote(String title, String desc) async {
   try {
     final response = await client
@@ -14,10 +16,8 @@ Future<bool> addNote(String title, String desc) async {
               'description': desc,
             }))
         .whenComplete(() => SmartDialog.dismiss());
-    print(response.body);
     switch (response.statusCode) {
       case 200:
-        print(response.body);
         return true;
       default:
         handleError(response.statusCode);
@@ -39,10 +39,8 @@ Future<bool> updateNote(int id, String title, String desc) async {
               'description': desc,
             }))
         .whenComplete(() => SmartDialog.dismiss());
-    print(response.body);
     switch (response.statusCode) {
       case 200:
-        print(response.body);
         return true;
       default:
         handleError(response.statusCode);
@@ -59,7 +57,6 @@ Future<Note> viewNote(int id) async {
     final response = await client
         .get(Uri.parse('$noteURL/$id'), headers: await requestHeaders())
         .whenComplete(() => SmartDialog.dismiss());
-    print(response.body);
     switch (response.statusCode) {
       case 200:
         return Note.fromJson(jsonDecode(response.body));
@@ -81,8 +78,6 @@ Future<bool> deleteNote(int id) async {
           headers: await requestHeaders(),
         )
         .whenComplete(() => SmartDialog.dismiss());
-
-    print(response.body);
 
     switch (response.statusCode) {
       case 200:

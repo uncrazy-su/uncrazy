@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'task.freezed.dart';
 part 'task.g.dart';
 
+//data model for Task
 @freezed
 class Task with _$Task {
   const factory Task(
@@ -10,7 +11,6 @@ class Task with _$Task {
     @JsonKey(name: 'date') String date,
     @JsonKey(name: 'time') String time,
     @JsonKey(name: 'description') String? description,
-    //@JsonKey(name: 'repetition') String repetition,
     @JsonKey(name: 'reminder') int reminder,    
     @JsonKey(name: 'tag') int tag,
     @JsonKey(name: 'status') int status,        

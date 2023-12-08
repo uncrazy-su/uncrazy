@@ -7,7 +7,8 @@ import 'package:uncrazy/screen/note/note_screen.dart';
 import 'package:uncrazy/screen/profile/profile_screen.dart';
 import 'package:uncrazy/screen/task/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uncrazy/widget/search_widget.dart';
+
+// this class serves for homeScreenView
 
 // ignore: must_be_immutable
 class HomeScreen extends ConsumerStatefulWidget {

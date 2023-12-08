@@ -3,6 +3,8 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:uncrazy/data/api_response.dart';
 import 'package:uncrazy/data/constant.dart';
 
+//This class serves for single task management
+
 Future<bool> addTask(String title, String date, String time, String desc, int reminder, int tag) async {
     try {
       //repetition;
@@ -18,10 +20,8 @@ Future<bool> addTask(String title, String date, String time, String desc, int re
                 'tag': tag
               }))
           .whenComplete(() => SmartDialog.dismiss());
-      print(response.body);
       switch (response.statusCode) {
         case 200:
-          print(response.body);
           return true;
         default:
           handleError(response.statusCode);
@@ -49,8 +49,6 @@ Future<bool> updateTask(int id, String title, String date, String time,
             }))
         .whenComplete(() => SmartDialog.dismiss());
 
-    print(response.body);
-
     switch (response.statusCode) {
       case 200:
         return true;
@@ -72,8 +70,6 @@ Future<bool> deleteTask(int id) async {
           headers: await requestHeaders(),
         )
         .whenComplete(() => SmartDialog.dismiss());
-
-    print(response.body);
 
     switch (response.statusCode) {
       case 200:

@@ -4,11 +4,11 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:uncrazy/widget/loading.dart';
 
+//This class serves for managing API calling protocol
 final _client = http.Client();
 
 http.Client get client {
   SmartDialog.showLoading(
-//    animationType: SmartAnimationType.scale,
     builder: (context) => CustomCircularProgressIndicator(),
     maskColor: Color.fromARGB(153, 0, 0, 0)
   );

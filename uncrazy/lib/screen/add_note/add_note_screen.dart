@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uncrazy/screen/add_note/add_note_controller.dart';
-import 'package:uncrazy/screen/home/homescreen.dart';
-import 'package:uncrazy/screen/note/note_screen.dart';
-import 'package:uncrazy/screen/profile/profile_screen.dart';
-import 'package:uncrazy/screen/register/register_screen.dart';
-import 'package:uncrazy/screen/task/task_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uncrazy/data/note/note.dart';
+
+//This class is for list of notes management
 
 // ignore: must_be_immutable
 class AddNoteScreen extends StatefulWidget {
@@ -50,7 +46,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'Note',
                         style: TextStyle(
@@ -62,7 +58,7 @@ class _AddNoteScreen extends State<AddNoteScreen> {
                     SizedBox(height: screensize.height * 0.02),
                     Container(
                       width: 120,
-                      child: Padding(
+                      child: const Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                         child: Center(
