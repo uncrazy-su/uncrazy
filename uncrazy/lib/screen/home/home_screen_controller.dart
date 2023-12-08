@@ -139,14 +139,82 @@ class HomeScreenController extends StateNotifier<HomeScreenModel> {
     }
   }
 
-  void search(String key) {
-    key = key.toLowerCase();
-    List<Task> tmp = state.tasks.where((element) {
-      var title = element.title.toLowerCase();
-      return title.contains(key);
-    }).toList();
-    state = state.copyWith(tasks: tmp);
+Future<bool> deleteDoneTask() async {
+  try {
+    final response = await client
+        .delete(
+          Uri.parse('$taskURL/delete'),
+          headers: await requestHeaders(),
+        )
+        .whenComplete(() => SmartDialog.dismiss());
+
+    switch (response.statusCode) {
+      case 200:
+        return true;
+      default:
+        handleError(response.statusCode);
+        return false;
+    }
+  } catch (e) {
+    handleUncaughtError();
+    return false;
   }
+}
+
+  Future<void> searchTask(String title) async{
+    try {
+      final response = await client
+          .post(Uri.parse('$taskURL/search'),
+              headers: await requestHeaders(),
+              body: json.encode({'title': title}))
+          .whenComplete(() => SmartDialog.dismiss());
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          //print(response.body);
+          List<Task> tasks = (jsonDecode(response.body) as List<dynamic>)
+              .map((e) => Task.fromJson(e))
+              .toList();
+          state = state.copyWith(tasks: tasks);
+        default:
+          handleError(response.statusCode);
+      }
+    } catch (e) {
+      handleUncaughtError();
+    }    
+  }
+
+    Future<void> searchNote(String title) async{
+    try {
+      final response = await client
+          .post(Uri.parse('$noteURL/search'),
+              headers: await requestHeaders(),
+              body: json.encode({'title': title}))
+          .whenComplete(() => SmartDialog.dismiss());
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          //print(response.body);
+          List<Note> notes = (jsonDecode(response.body) as List<dynamic>)
+              .map((e) => Note.fromJson(e))
+              .toList();
+          state = state.copyWith(notes: notes);
+        default:
+          handleError(response.statusCode);
+      }
+    } catch (e) {
+      handleUncaughtError();
+    }    
+  }
+
+  // void search(String key) {
+  //   key = key.toLowerCase();
+  //   List<Task> tmp = state.tasks.where((element) {
+  //     var title = element.title.toLowerCase();
+  //     return title.contains(key);
+  //   }).toList();
+  //   state = state.copyWith(tasks: tmp);
+  // }
 
   void filterByTag(int key) {
     if (key != 0) {

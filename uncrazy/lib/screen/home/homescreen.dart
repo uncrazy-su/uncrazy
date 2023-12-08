@@ -30,6 +30,8 @@ class _HomeScreen extends ConsumerState<HomeScreen>
   late HomeScreenController homeScreenController;
   late HomeScreenModel model;
 
+  final searchController = TextEditingController();
+
   int tabIndex = 0;
   late TabController tabController2;
 
@@ -51,6 +53,54 @@ class _HomeScreen extends ConsumerState<HomeScreen>
   void resetIcon() {
     ref.read(isSearchProvider.notifier).state = false;
     ref.read(searchIndicatorProvider.notifier).state = Colors.white;
+  }
+
+  Widget searchField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Stack(children: [
+        TextFormField(
+          controller: searchController,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue, width: 2),
+                  borderRadius: BorderRadius.circular(10)),
+              filled: true,
+              fillColor: Colors.white,
+              hintText: "Search"),
+          style: const TextStyle(color: Colors.black, fontSize: 18),
+          onEditingComplete: () {
+            if (tabController2.index == 0) {
+                  homeScreenController.searchTask(searchController
+                      .text);
+                } else {
+                  homeScreenController.searchNote(searchController.text);
+                }
+          },
+        ),
+        Positioned(
+          right: 0,
+          top: 5,
+          child: IconButton(
+              icon: const Icon(
+                Icons.search_rounded,
+                color: Colors.black,
+                size: 20,
+              ),
+              onPressed: () {
+                if (tabController2.index == 0) {
+                  homeScreenController.searchTask(searchController
+                      .text);
+                } else {
+                  homeScreenController.searchNote(searchController.text);
+                }
+              }),
+        ),
+      ]),
+    );
   }
 
   @override
@@ -75,7 +125,8 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                       DateFormat('yyyy-MM-dd').format(pickedDate));
                   homeScreenController.getTasksOverdue(
                       DateFormat('yyyy-MM-dd').format(DateTime.now()));
-                  homeScreenController.getTasksOverdue(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                  homeScreenController.getTasksOverdue(
+                      DateFormat('yyyy-MM-dd').format(DateTime.now()));
                 } else {
                   homeScreenController.getNotes();
                 }
@@ -112,13 +163,14 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                       child: Container(
                         width: 45,
                         height: 45,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.blue,
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("assets/images/logo.png"),
-                            fit: BoxFit.cover,
-                          ),
+                            image: NetworkImage(model.user.image??'assets/images/logo.png'),
+                            fit: BoxFit.cover
+//                            AssetImage('')
+                            ),
                         ),
                       ),
                       onPressed: () {
@@ -229,7 +281,7 @@ class _HomeScreen extends ConsumerState<HomeScreen>
                     // Search box
                     SizedBox(height: screensize.height * 0.01),
 
-                    Visibility(visible: isSearch, child: SearchWidget()),
+                    Visibility(visible: isSearch, child: searchField()),
 
                     //Tabbar view, view from another screen
                     SizedBox(height: screensize.height * 0.01),

@@ -10,7 +10,7 @@ _$HomeScreenModelImpl _$$HomeScreenModelImplFromJson(
         Map<String, dynamic> json) =>
     _$HomeScreenModelImpl(
       user: json['user'] == null
-          ? const User(0, '', '', '', '')
+          ? const User(0, '', '', '', '', '')
           : User.fromJson(json['user'] as Map<String, dynamic>),
       notes: (json['notes'] as List<dynamic>?)
               ?.map((e) => Note.fromJson(e as Map<String, dynamic>))

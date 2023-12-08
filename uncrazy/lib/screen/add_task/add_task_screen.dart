@@ -460,7 +460,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                                           onSelected: (bool selected) {
                                             setState(() {
                                               tagIndex =
-                                                  selected ? index : null;
+                                                  (selected ? index : null)!;
                                               print(tagIndex);
                                             });
                                           },
@@ -571,7 +571,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       descController.text,
                       repetitionDay,
                       0,
-                      0)) {
+                      tagIndex)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
@@ -583,7 +583,7 @@ class _AddTaskScreen extends State<AddTaskScreen> {
                       timeController.text,
                       descController.text,
                       0,
-                      0)) {
+                      tagIndex)) {
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }

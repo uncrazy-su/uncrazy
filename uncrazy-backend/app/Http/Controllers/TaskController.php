@@ -52,6 +52,13 @@ class TaskController extends Controller
         );
     }
 
+    public function search(Request $request){
+        $tasks = Task::where('user_id', auth()->user()->id)->where('title','LIKE', '%'.$request['title']. '%')->get();//->whereLike('title', $request['title'])->values();
+        return response(
+            $tasks, 200
+        );
+    }
+
     public function show($id){
         $task = Task::find($id);
         return response(

@@ -8,6 +8,7 @@ class User with _$User {
     @JsonKey(name: 'id') int id,
     @JsonKey(name: 'name') String name,
     @JsonKey(name: 'phone_no') String? phone_no,
+    @JsonKey(name: 'image') String? image,
     @JsonKey(name: 'email') String? email,
     @JsonKey(name: 'token') String? token,
     

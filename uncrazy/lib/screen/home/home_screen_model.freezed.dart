@@ -146,7 +146,7 @@ class __$$HomeScreenModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HomeScreenModelImpl implements _HomeScreenModel {
   const _$HomeScreenModelImpl(
-      {this.user = const User(0, '', '', '', ''),
+      {this.user = const User(0, '', '', '', '', ''),
       final List<Note> notes = const [],
       final List<Task> tasks = const [],
       final List<Task> tasksOverdue = const []})

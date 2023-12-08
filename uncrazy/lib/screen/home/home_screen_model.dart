@@ -8,7 +8,7 @@ part 'home_screen_model.g.dart';
 @freezed
 class HomeScreenModel with _$HomeScreenModel{
   const factory HomeScreenModel({
-        @Default(User(0, '', '', '', '')) User user,
+        @Default(User(0, '', '', '', '', '')) User user,
         @Default([]) List<Note> notes,
         @Default([]) List<Task> tasks,
         @Default([]) List<Task> tasksOverdue,
